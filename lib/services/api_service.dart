@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/services/response/tutors_response.dart';
 import 'package:tutor_finder_app/settings.dart' as settings;
 import 'response/login_response.dart';
@@ -15,6 +16,8 @@ abstract class ApiClient{
   Future<PostsResponse> getPosts();
   @GET('/db')
   Future<TutorsResponse> getTutors();
+  @GET('/tutor?id={idTutor}')
+  Future<Tutor> getTutorById(@Path('idTutor') String id);
 }
 class Api{
   ApiClient client;

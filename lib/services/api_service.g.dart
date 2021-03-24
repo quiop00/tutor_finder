@@ -67,7 +67,24 @@ class _ApiClient implements ApiClient {
             baseUrl: baseUrl),
         data: _data);
     final value = TutorsResponse.fromJson(_result.data);
-    //print(value.tutors[0].location);
+    return value;
+  }
+
+  @override
+  Future<Tutor> getTutorById(id) async {
+    ArgumentError.checkNotNull(id, 'id');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/tutor?id=$id',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = Tutor.fromJson(_result.data);
     return value;
   }
 }

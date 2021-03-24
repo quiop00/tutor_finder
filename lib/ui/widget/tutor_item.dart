@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
-import 'package:tutor_finder_app/ui/screens/detail/tutor_detail.dart';
+import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view.dart';
 
 class TutorElement extends StatelessWidget{
   final Tutor tutor;
