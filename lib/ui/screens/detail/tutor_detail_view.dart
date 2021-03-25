@@ -6,6 +6,7 @@ import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view_model.dart';
 import 'package:tutor_finder_app/ui/widget/infor.dart';
 import 'package:tutor_finder_app/ui/widget/rating_box.dart';
+import 'package:tutor_finder_app/ui/widget/schedule.dart';
 import 'package:tutor_finder_app/ui/widget/tutor_item.dart';
 
 class TutorDetail extends StatefulWidget{
@@ -30,9 +31,6 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Chi tiết'),
-      ),
       body: ViewModelBuilder<TutorDetailViewModel>.reactive(
         builder:(context,model,child)=>_TutorDetailView,
         viewModelBuilder: ()=>TutorDetailViewModel(),
@@ -161,7 +159,7 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                                   controller: _tabController,
                                   children: [
                                     InforTutor(tutor: tutor,),
-                                    Text('lịch học'),
+                                    Schedule(schedules: tutor.schedule,),
                                     Text('Đánh giá')
                                   ],
                                 ),

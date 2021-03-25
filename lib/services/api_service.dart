@@ -7,7 +7,7 @@ import 'package:tutor_finder_app/settings.dart' as settings;
 import 'response/login_response.dart';
 import 'response/posts_response.dart';
 part 'api_service.g.dart';
-@RestApi(baseUrl:"https://my-json-server.typicode.com/quiop00/testApi")
+@RestApi(baseUrl:"https://my-json-server.typicode.com/quiop00/api")
 abstract class ApiClient{
   factory ApiClient(Dio dio,{String baseUrl})=_ApiClient;
   @POST('/login?username={username}&password={password}')

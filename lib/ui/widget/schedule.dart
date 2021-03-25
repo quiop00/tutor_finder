@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tutor_finder_app/models/day_model.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
 
+
+//Schedule teaching of tutor
 class Schedule extends StatefulWidget{
-  final ScheduleModel schedules;
+  final List<DayScheduleTutor> schedules;
   Schedule({this.schedules});
   @override
   State<StatefulWidget> createState() {
@@ -11,7 +14,7 @@ class Schedule extends StatefulWidget{
   }
 }
 class _Schedule extends State<Schedule>{
-  final ScheduleModel schedules;
+  final List<DayScheduleTutor> schedules;
   _Schedule({this.schedules});
   int _selectedIndex;
   @override
@@ -25,19 +28,21 @@ class _Schedule extends State<Schedule>{
       child: Column(
         children: [
           Container(
-            height: 30,
+            height: 40,
+            padding: EdgeInsets.only(left: 20,top:10),
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context,index)=>
                     _daySelected(index),
-                itemCount: schedules.schedule.length,
+                itemCount: schedules.length,
             ),
           ),
           Container(
             height: 200,
             child: ListView.builder(
-                itemBuilder: (context,index)=>
-                    _timeSelected(index)
+                itemBuilder: (context,i)=>
+                    _timeSelected(i),
+                itemCount: schedules[_selectedIndex].times.length,
             ),
           )
         ],
@@ -47,9 +52,9 @@ class _Schedule extends State<Schedule>{
   //index   0:sunday  -:-  7: saturday
   Widget _daySelected(int index){
     return RaisedButton(
+        color:  _selectedIndex==index?Colors.blueAccent:Colors.white,
         child: Container(
-          margin: EdgeInsets.all(10),
-          child: Text(schedules.schedule[index].teachingDay),
+          child: Text(schedules[index].teachingDay),
         ),
         onPressed: (){
           setState(() {
@@ -59,17 +64,30 @@ class _Schedule extends State<Schedule>{
     );
   }
   Widget _timeSelected(int index){
-    return RaisedButton(
-        child: Container(
-          child: Card(
-            child: Text('${schedules.schedule[_selectedIndex].times[index]}'),
-          ),
-        ),
-        onPressed: (){
-          setState(() {
-
-          });
-        }
+    bool status=schedules[_selectedIndex].times[index].status;
+    return Container(
+      height: 40,
+      margin: EdgeInsets.only(left: 10,right: 10),
+      child: Card(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children:[
+              Container(
+                 margin: EdgeInsets.only(left: 10),
+                 child: Text('${schedules[_selectedIndex].times[index].startingTime} - ${schedules[_selectedIndex].times[index].endTime}')
+              ),
+              status?Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.green,
+                ),
+                margin: EdgeInsets.only(right: 10),
+                padding: EdgeInsets.all(5),
+                child: Text('Đã đặt',style: TextStyle(fontSize: 12),),
+              ):Text('')
+            ],
+       ),
+      ),
     );
   }
 }

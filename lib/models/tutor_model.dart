@@ -2,6 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:tutor_finder_app/models/grade_model.dart';
 import 'package:tutor_finder_app/models/subject_model.dart';
 import 'package:tutor_finder_app/models/user_model.dart';
+
+import 'day_model.dart';
 part 'tutor_model.g.dart';
 @JsonSerializable()
 class Tutor extends User{
@@ -11,6 +13,7 @@ class Tutor extends User{
   String location;
   List<Grade> grades;
   String rating;
+  List<DayScheduleTutor> schedule;
   Tutor();
   factory Tutor.fromJson(Map<String,dynamic>json)=>
       _$TutorFromJson(json);

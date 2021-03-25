@@ -9,7 +9,7 @@ part of 'api_service.dart';
 class _ApiClient implements ApiClient {
   _ApiClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'https://my-json-server.typicode.com/quiop00/testApi';
+    baseUrl ??= 'https://my-json-server.typicode.com/quiop00/api';
   }
 
   final Dio _dio;

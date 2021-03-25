@@ -28,7 +28,12 @@ Tutor _$TutorFromJson(Map<String, dynamic> json) {
         ?.map(
             (e) => e == null ? null : Grade.fromJson(e as Map<String, dynamic>))
         ?.toList()
-    ..rating = json['rating'] as String;
+    ..rating = json['rating'] as String
+    ..schedule = (json['schedule'] as List)
+        ?.map((e) => e == null
+            ? null
+            : DayScheduleTutor.fromJson(e as Map<String, dynamic>))
+        ?.toList();
 }
 
 Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
@@ -47,4 +52,5 @@ Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
       'location': instance.location,
       'grades': instance.grades,
       'rating': instance.rating,
+      'schedule': instance.schedule,
     };
