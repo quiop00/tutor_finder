@@ -143,7 +143,7 @@ class Home extends StatelessWidget{
               ),
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context)=>TutorDetail(idTutor: tutors[index].id,)
+                    builder: (context)=>TutorDetail(tutor: tutors[index])
                 ));
               },
             );

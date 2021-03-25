@@ -4,22 +4,29 @@ import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view_model.dart';
+import 'package:tutor_finder_app/ui/widget/infor.dart';
+import 'package:tutor_finder_app/ui/widget/rating_box.dart';
 import 'package:tutor_finder_app/ui/widget/tutor_item.dart';
 
 class TutorDetail extends StatefulWidget{
-  final idTutor;
-  TutorDetail({this.idTutor});
+  final tutor;
+  TutorDetail({this.tutor});
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _TutorDetail(idTutor: idTutor);
+    return _TutorDetail(tutor: tutor);
   }
 }
-class _TutorDetail extends State<TutorDetail>{
-  final idTutor;
-  _TutorDetail({this.idTutor});
-  Tutor tutor;
+class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixin{
+  final tutor;
+  _TutorDetail({this.tutor});
   TabController _tabController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _tabController=TabController(length: 3, vsync: this);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,14 +36,14 @@ class _TutorDetail extends State<TutorDetail>{
       body: ViewModelBuilder<TutorDetailViewModel>.reactive(
         builder:(context,model,child)=>_TutorDetailView,
         viewModelBuilder: ()=>TutorDetailViewModel(),
-        onModelReady: (model)=>
-            model.getTutorById(
-              id: idTutor,
-              onLoading: (){
-              },
-              onSuccess: (){
-                tutor=model.tutor;
-            }),
+        // onModelReady: (model)=>
+        //     model.getTutorById(
+        //       id: idTutor,
+        //       onLoading: (){
+        //       },
+        //       onSuccess: (){
+        //         tutor=model.tutor;
+        //     }),
       ),
     );
   }
@@ -45,13 +52,15 @@ class _TutorDetail extends State<TutorDetail>{
     Consumer<TutorDetailViewModel>(
         builder: (context,model,child){
           return Container(
+            color: Colors.grey,
+            margin: EdgeInsets.only(bottom: 5),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:[
                   Container(
-                    width: 200,
+                    height: 150,
                     decoration: BoxDecoration(
-                        color: Colors.cyan
+                        color: Colors.white,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,40 +74,63 @@ class _TutorDetail extends State<TutorDetail>{
                                 child: Column(
                                   children: [
                                     Container(
+                                      width: 100,
+                                      height: 100,
                                       decoration: BoxDecoration(
                                         image: DecorationImage(
                                           image:NetworkImage(tutor.avatarPath??"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"),
                                           fit: BoxFit.cover
                                         )
                                       ),
-                                    )
+                                    ),
+                                    //RatingBox(rating: tutor.rating,)
                                   ],
                                 ),
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(tutor.name??"",style: TextStyle(fontSize: 30),),
+                                  Container(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text(tutor.name??"",style: TextStyle(fontSize: 30),)
+                                  ),
                                   SizedBox(
                                     height: 30,
                                   ),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(10)
+                                      InkWell(
+                                        child: Container(
+                                          width: 80,
+                                          height: 30,
+                                          padding: EdgeInsets.only(left: 5,right: 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.blueAccent,
+                                          ),
+                                          child: Center(
+                                              child: Text('Nhắn tin',style: TextStyle(fontSize: 15,color: Colors.white,),)
+                                          ),
                                         ),
-                                        child: Icon(Icons.message,size: 20,color: Colors.blueAccent,),
+                                        onTap: (){
+
+                                        },
                                       ),
-                                      Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(10)
+                                      SizedBox(width: 20,),
+                                      InkWell(
+                                        child: Container(
+                                          width: 80,
+                                          height: 30,
+                                          padding: EdgeInsets.only(left: 5,right: 5),
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.green
+                                          ),
+                                          child: Center(
+                                            child:  Text('Đặt lịch',style: TextStyle(fontSize: 15,color: Colors.white,),)
+                                          )
                                         ),
-                                        child: Icon(Icons.call,size: 20,color: Colors.green,),
                                       )
                                     ],
                                   )
@@ -110,32 +142,35 @@ class _TutorDetail extends State<TutorDetail>{
                       ],
                     ),
                   ),
-                  Container(
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          top: 5,
-                          left: 10,
-                          child: TabBar(
-                            tabs: [
-
-                            ],
-                            controller: _tabController,
-                          ),
-                        ),
-                        Positioned(
-                          top:20,
-                          left: 5,
-                          child: TabBarView(
-                            controller: _tabController,
+                  SizedBox(height: 2,),
+                  Expanded(
+                      child: Container(
+                          color: Colors.white,
+                          child: Column(
                             children: [
-
+                              TabBar(
+                                tabs: [
+                                  Tab(child: Text('Thông tin',style: TextStyle(color: Colors.black),),), // you can specify pages here if you want
+                                  Tab(child: Text('Lịch học',style: TextStyle(color: Colors.black),),),
+                                  Tab(child: Text('Đánh giá',style: TextStyle(color: Colors.black),),)
+                                ],
+                                controller: _tabController,
+                              ),
+                              Expanded(
+                                child: TabBarView(
+                                  controller: _tabController,
+                                  children: [
+                                    InforTutor(tutor: tutor,),
+                                    Text('lịch học'),
+                                    Text('Đánh giá')
+                                  ],
+                                ),
+                              )
                             ],
                           )
-                        )
-                      ],
-                    )
+                      )
                   )
+
                 ]
             ),
           );
