@@ -18,8 +18,8 @@ class HomeViewLearnerModel extends BaseViewModel{
         Function(String) onError,
         VoidCallback onSuccess}) {
     _api.client.getTutors().then((value) {
-      this.onSuccess = onSuccess;
       tutorsResponse = value;
+      this.onSuccess = onSuccess;
       this.onError = onError;
       notifyListeners();
     }).catchError((error) {

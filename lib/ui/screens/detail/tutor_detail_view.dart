@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view_model.dart';
+import 'package:tutor_finder_app/ui/widget/evaluate.dart';
 import 'package:tutor_finder_app/ui/widget/infor.dart';
 import 'package:tutor_finder_app/ui/widget/rating_box.dart';
 import 'package:tutor_finder_app/ui/widget/schedule.dart';
@@ -31,19 +32,24 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ViewModelBuilder<TutorDetailViewModel>.reactive(
-        builder:(context,model,child)=>_TutorDetailView,
-        viewModelBuilder: ()=>TutorDetailViewModel(),
-        // onModelReady: (model)=>
-        //     model.getTutorById(
-        //       id: idTutor,
-        //       onLoading: (){
-        //       },
-        //       onSuccess: (){
-        //         tutor=model.tutor;
-        //     }),
+      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Chi tiết'),
       ),
-    );
+      body:  ViewModelBuilder<TutorDetailViewModel>.reactive(
+          builder:(context,model,child)=>_TutorDetailView,
+          viewModelBuilder: ()=>TutorDetailViewModel(),
+          // onModelReady: (model)=>
+          //     model.getTutorById(
+          //       id: idTutor,
+          //       onLoading: (){
+          //       },
+          //       onSuccess: (){
+          //         tutor=model.tutor;
+          //     }),
+        ),
+      );
   }
   // ignore: non_constant_identifier_names
   Widget get _TutorDetailView=>
@@ -52,24 +58,28 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
           return Container(
             color: Colors.grey,
             margin: EdgeInsets.only(bottom: 5),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:[
-                  Container(
-                    height: 150,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                    ),
-                    child: Row(
+            child: SingleChildScrollView(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children:[
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(10),
+                          color: Colors.white,
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.only(left: 10,right: 10),
+                          height: 150,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Container(
                                       width: 100,
@@ -87,6 +97,7 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                               ),
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Container(
                                       padding: EdgeInsets.only(left: 10),
@@ -97,6 +108,7 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisSize: MainAxisSize.min,
                                     children: [
                                       InkWell(
                                         child: Container(
@@ -139,37 +151,40 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                         )
                       ],
                     ),
-                  ),
-                  SizedBox(height: 2,),
-                  Expanded(
-                      child: Container(
-                          color: Colors.white,
-                          child: Column(
-                            children: [
-                              TabBar(
-                                tabs: [
-                                  Tab(child: Text('Thông tin',style: TextStyle(color: Colors.black),),), // you can specify pages here if you want
-                                  Tab(child: Text('Lịch học',style: TextStyle(color: Colors.black),),),
-                                  Tab(child: Text('Đánh giá',style: TextStyle(color: Colors.black),),)
-                                ],
-                                controller: _tabController,
-                              ),
-                              Expanded(
-                                child: TabBarView(
-                                  controller: _tabController,
-                                  children: [
-                                    InforTutor(tutor: tutor,),
-                                    Schedule(schedules: tutor.schedule,),
-                                    Text('Đánh giá')
+                    SizedBox(height: 2,),
+                    Flexible(
+                        flex: 2,
+                        fit: FlexFit.loose,
+                        child: Container(
+                            height: 400,
+                            color: Colors.white,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TabBar(
+                                  tabs: [
+                                    Tab(child: Text('Thông tin',style: TextStyle(color: Colors.black),),), // you can specify pages here if you want
+                                    Tab(child: Text('Lịch học',style: TextStyle(color: Colors.black),),),
+                                    Tab(child: Text('Đánh giá',style: TextStyle(color: Colors.black),),)
                                   ],
+                                  controller: _tabController,
                                 ),
-                              )
-                            ],
-                          )
-                      )
-                  )
-
-                ]
+                                Flexible(
+                                  child: TabBarView(
+                                      controller: _tabController,
+                                      children: [
+                                        InforTutor(tutor: tutor,),
+                                        Schedule(schedules: tutor.schedule,),
+                                        EvaluateWidget(tutor: tutor,)
+                                      ],
+                                    ),
+                                ),
+                              ],
+                            )
+                        )
+                    )
+                  ]
+              ),
             ),
           );
         }

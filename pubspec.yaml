@@ -34,7 +34,7 @@ dependencies:
   json_annotation: any
   retrofit: any
   provider: any
-
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

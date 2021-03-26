@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:tutor_finder_app/models/comments_model.dart';
 import 'package:tutor_finder_app/models/grade_model.dart';
 import 'package:tutor_finder_app/models/subject_model.dart';
 import 'package:tutor_finder_app/models/user_model.dart';
@@ -14,6 +15,7 @@ class Tutor extends User{
   List<Grade> grades;
   String rating;
   List<DayScheduleTutor> schedule;
+  List<CommentModel> comments;
   Tutor();
   factory Tutor.fromJson(Map<String,dynamic>json)=>
       _$TutorFromJson(json);

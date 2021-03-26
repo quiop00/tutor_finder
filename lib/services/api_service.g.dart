@@ -87,4 +87,21 @@ class _ApiClient implements ApiClient {
     final value = Tutor.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<NotificationResponse> getNotifiesById() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/db',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = NotificationResponse.fromJson(_result.data);
+    return value;
+  }
 }

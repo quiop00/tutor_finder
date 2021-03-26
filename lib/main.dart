@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_learner.dart';
+import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
 void main() {
   settupLocator();
   runApp(MyApp());
@@ -37,12 +38,11 @@ class _Home extends State<Home>{
         builder: (context)=> HomeViewLearner()
     ),
     Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
       'Index 2: School',
       style: optionStyle,
+    ),
+    CupertinoTabView(
+      builder: (context)=>NotificationView(),
     ),
     Text(
       'Index 2: School',
@@ -62,6 +62,7 @@ class _Home extends State<Home>{
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
       child: CupertinoTabScaffold(
         tabBar: CupertinoTabBar(
           items: const <BottomNavigationBarItem>[

@@ -22,78 +22,77 @@ class _HomeViewLearner extends State<HomeViewLearner> with SingleTickerProviderS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomPadding: true,
       body: SafeArea(
-        child: Container(
-          color:Color.fromRGBO(246, 246, 246,0.8),
-          child: Column(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                            color:Color.fromRGBO(244, 243, 243, 1),
-                            borderRadius: BorderRadius.circular(12)
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              prefixIcon:Icon(Icons.search,color:Colors.black54),
-                              hintText: 'Nhập tên môn học/giáo viên',
-                              hintStyle: TextStyle(color: Colors.grey,fontSize: 15.0)
-                          ),
+        child: SingleChildScrollView(
+          child: Container(
+            color:Color.fromRGBO(246, 246, 246,0.8),
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    child: Container(
+                      padding: EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                          color:Color.fromRGBO(244, 243, 243, 1),
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            prefixIcon:Icon(Icons.search,color:Colors.black54),
+                            hintText: 'Nhập tên môn học/giáo viên',
+                            hintStyle: TextStyle(color: Colors.grey,fontSize: 15.0)
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: EdgeInsets.all(10),
-
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white70,
-                        borderRadius: BorderRadius.circular(5)
                     ),
-                    child: TabBar(
-                      isScrollable: false,
-                      indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.cyan
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white70,
+                          borderRadius: BorderRadius.circular(5)
                       ),
-                      tabs: [
-                        Tab(child: Text('Phù hợp',style: TextStyle(color: Colors.black),),), // you can specify pages here if you want
-                        Tab(child: Text('Gần đây',style: TextStyle(color: Colors.black),),),
-                        Container(
-                            child: Tab(child: Text('Phổ biến',style: TextStyle(color: Colors.black),),)
-                        )
-                      ],
-                      controller: _tabController,
+                      child: TabBar(
+                        isScrollable: false,
+                        indicator: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.cyan
+                        ),
+                        tabs: [
+                          Tab(child: Text('Phù hợp',style: TextStyle(color: Colors.black),),), // you can specify pages here if you want
+                          Tab(child: Text('Gần đây',style: TextStyle(color: Colors.black),),),
+                          Container(
+                              child: Tab(child: Text('Phổ biến',style: TextStyle(color: Colors.black),),)
+                          )
+                        ],
+                        controller: _tabController,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 400,
-                    color: Colors.white,
-                    child: TabBarView(
-                      children: [
-                        Home(),
-                        Icon(Icons.animation),
-                        Icon(Icons.search)
-                      ],
-                      controller: _tabController,
+                  Flexible(
+                    fit: FlexFit.loose,
+                    child: Container(
+                      height: 370,
+                      color: Colors.white,
+                      child: TabBarView(
+                        children: [
+                          Home(),
+                          Icon(Icons.animation),
+                          Icon(Icons.search)
+                        ],
+                        controller: _tabController,
+                      ),
                     ),
                   ),
-                ),
-              ]
+                ]
+            ),
           ),
         ),
       ),

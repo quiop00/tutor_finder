@@ -5,6 +5,7 @@ import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/services/response/tutors_response.dart';
 import 'package:tutor_finder_app/settings.dart' as settings;
 import 'response/login_response.dart';
+import 'response/notification_response.dart';
 import 'response/posts_response.dart';
 part 'api_service.g.dart';
 @RestApi(baseUrl:"https://my-json-server.typicode.com/quiop00/api")
@@ -18,6 +19,9 @@ abstract class ApiClient{
   Future<TutorsResponse> getTutors();
   @GET('/tutor?id={idTutor}')
   Future<Tutor> getTutorById(@Path('idTutor') String id);
+  //fake api notifications
+  @GET('/db')
+  Future<NotificationResponse> getNotifiesById();
 }
 class Api{
   ApiClient client;
