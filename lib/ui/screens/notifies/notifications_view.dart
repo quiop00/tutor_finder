@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/notification_model.dart';
-import 'package:tutor_finder_app/services/response/notification_response.dart';
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view_model.dart';
 import 'package:tutor_finder_app/ui/widget/notification_item.dart';
 

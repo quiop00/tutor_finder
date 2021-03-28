@@ -40,7 +40,4 @@ class InforTutor extends StatelessWidget{
       ),
     );
   }
-  String _subjects(List<Subject> subjects){
-    return subjects.map((e) => e.subjectName).join(", ");
-  }
 }

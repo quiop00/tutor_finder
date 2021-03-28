@@ -32,12 +32,10 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Chi tiết'),
       ),
-      body:  ViewModelBuilder<TutorDetailViewModel>.reactive(
+      body: ViewModelBuilder<TutorDetailViewModel>.reactive(
           builder:(context,model,child)=>_TutorDetailView,
           viewModelBuilder: ()=>TutorDetailViewModel(),
           // onModelReady: (model)=>
@@ -55,11 +53,30 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
   Widget get _TutorDetailView=>
     Consumer<TutorDetailViewModel>(
         builder: (context,model,child){
-          return Container(
-            color: Colors.grey,
-            margin: EdgeInsets.only(bottom: 5),
-            child: SingleChildScrollView(
-              child: Column(
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                pinned: true,
+                expandedHeight: 200.0,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Text(model.tutor.name),
+                  background: Image.network(
+                    model.tutor.avatarPath,fit: BoxFit.cover,
+                  ),
+                ),
+                bottom: PreferredSize(
+                  preferredSize: const Size.fromHeight(0.0),
+                  child: Transform.translate(
+                    offset: const Offset(0, 24),
+                    child: RaisedButton(
+                      shape: StadiumBorder(),
+                      child: Text("Click Here"),
+                      onPressed: () {},
+                    ),
+                ),
+              ),
+              ),
+              Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children:[
@@ -85,10 +102,10 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                                       width: 100,
                                       height: 100,
                                       decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image:NetworkImage(tutor.avatarPath??"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"),
-                                          fit: BoxFit.cover
-                                        )
+                                          image: DecorationImage(
+                                              image:NetworkImage(tutor.avatarPath??"https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"),
+                                              fit: BoxFit.cover
+                                          )
                                       ),
                                     ),
                                     //RatingBox(rating: tutor.rating,)
@@ -130,16 +147,16 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                                       SizedBox(width: 20,),
                                       InkWell(
                                         child: Container(
-                                          width: 80,
-                                          height: 30,
-                                          padding: EdgeInsets.only(left: 5,right: 5),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.green
-                                          ),
-                                          child: Center(
-                                            child:  Text('Đặt lịch',style: TextStyle(fontSize: 15,color: Colors.white,),)
-                                          )
+                                            width: 80,
+                                            height: 30,
+                                            padding: EdgeInsets.only(left: 5,right: 5),
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.green
+                                            ),
+                                            child: Center(
+                                                child:  Text('Đặt lịch',style: TextStyle(fontSize: 15,color: Colors.white,),)
+                                            )
                                         ),
                                       )
                                     ],
@@ -171,13 +188,13 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                                 ),
                                 Flexible(
                                   child: TabBarView(
-                                      controller: _tabController,
-                                      children: [
-                                        InforTutor(tutor: tutor,),
-                                        Schedule(schedules: tutor.schedule,),
-                                        EvaluateWidget(tutor: tutor,)
-                                      ],
-                                    ),
+                                    controller: _tabController,
+                                    children: [
+                                      InforTutor(tutor: tutor,),
+                                      Schedule(schedules: tutor.schedule,),
+                                      EvaluateWidget(tutor: tutor,)
+                                    ],
+                                  ),
                                 ),
                               ],
                             )
@@ -185,8 +202,16 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                     )
                   ]
               ),
-            ),
+            ],
           );
+
+          // return Container(
+          //   color: Colors.grey,
+          //   margin: EdgeInsets.only(bottom: 5),
+          //   child: SingleChildScrollView(
+          //     child:
+          //   ),
+          // );
         }
     );
 
