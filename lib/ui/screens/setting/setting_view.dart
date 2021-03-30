@@ -6,63 +6,82 @@ class SettingView extends StatefulWidget{
     // TODO: implement createState
     return _SettingView();
   }
-
 }
 class _SettingView extends State<SettingView>{
+  final TextStyle categoryStyle=TextStyle(fontSize: 25);
+  final TextStyle childStyle=TextStyle(fontSize: 20);
+  final sizedBox=20.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        padding: EdgeInsets.all(10),
         color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: ListView(
           children: [
+            Text('Settings',style: TextStyle(fontSize: 30),),
+            SizedBox(height: 20,),
             Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.account_circle),
-                  Text("Account")
+                  Icon(Icons.account_circle,size: 25,),
+                  Text("Account",style: categoryStyle,)
                 ],
               ),
             ),
             Divider(height: 1,color: Colors.black,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Edit profile"),
-                Icon(Icons.arrow_forward_ios_outlined),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Change password"),
-                Icon(Icons.arrow_forward_ios_outlined),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Facebook"),
-                Icon(Icons.arrow_forward_ios_outlined),
-              ],
-            ),
-            SizedBox(height: 8,),
-            Container(
+            SizedBox(height: sizedBox,),
+            InkWell(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.notifications),
-                  Text("Notification")
+                  Text("Edit profile",style: childStyle,),
+                  Icon(Icons.arrow_forward_ios_outlined),
+                ],
+              ),
+              onTap: (){},
+            ),
+            SizedBox(height: sizedBox,),
+            InkWell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Change password",style: childStyle),
+                  Icon(Icons.arrow_forward_ios_outlined),
+                ],
+              ),
+              onTap: (){},
+            ),
+            SizedBox(height: sizedBox,),
+            InkWell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Facebook",style: childStyle),
+                  Icon(Icons.arrow_forward_ios_outlined),
+                ],
+              ),
+              onTap: (){
+
+              },
+            ),
+            SizedBox(height: 12,),
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Icons.notifications,size: 25,color: Colors.yellow,),
+                  Text("Notification",style: categoryStyle)
                 ],
               ),
             ),
             Divider(height: 1,color: Colors.black,),
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Notification"),
+                Text("Notification",style: childStyle),
                 Switch(
                     value: true,
                     onChanged: (value){
@@ -70,10 +89,11 @@ class _SettingView extends State<SettingView>{
                 )
               ],
             ),
+            SizedBox(height: 10,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("App notification"),
+                Text("App notification",style: childStyle),
                 Switch(
                     value: false,
                     onChanged: (value){
@@ -81,6 +101,7 @@ class _SettingView extends State<SettingView>{
                 )
               ],
             ),
+            SizedBox(height: 10,),
             Container(
               child: Text("Logout"),
             )

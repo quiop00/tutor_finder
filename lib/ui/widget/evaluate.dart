@@ -16,33 +16,34 @@ class _EvaluateWidget extends State<EvaluateWidget>{
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 400,
+      height: 360,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            child: Row(
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width-60,
-                    child: TextField(
-                      controller: commentTextEditController,
-                    ),
-                  ),
-                  Expanded(
-                    child: IconButton(
-                      icon: Icon(Icons.send),
-                      onPressed: (){
-                        // code comment here
-                      },
-                    ),
-                  )
-                ],
-              ),
-          ),
+          // Container(
+          //   padding: EdgeInsets.all(10),
+          //   child: Row(
+          //       children: [
+          //         Container(
+          //           width: MediaQuery.of(context).size.width-60,
+          //           child: TextField(
+          //             controller: commentTextEditController,
+          //           ),
+          //         ),
+          //         Expanded(
+          //           child: IconButton(
+          //             icon: Icon(Icons.send),
+          //             onPressed: (){
+          //               // code comment here
+          //             },
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          // ),
           Expanded(
             child: Container(
-              height: 400,
+              height: 360,
               child: ListView.builder(
                 itemBuilder: (context,index)=>_comment(index),
                 itemCount: tutor.comments.length,

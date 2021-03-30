@@ -9,13 +9,13 @@ class TutorElement extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
+      height: 120,
       child: Card(
         child: Row(
           children: [
             Container(
-              width: 70,
-              height: 70,
+              width: 90,
+              height: 90,
               margin: EdgeInsets.all(12),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -32,42 +32,67 @@ class TutorElement extends StatelessWidget{
                   Container(
                     margin:EdgeInsets.fromLTRB(0, 8, 0, 0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(child: Text(tutor.name,style: TextStyle(fontSize: 15),)),
-                        ratingBox(int.parse(tutor.rating)),
+                        Icon(Icons.favorite_border)
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.star,color: Colors.yellow,size: 12,),
+                      SizedBox(width: 5,),
+                      Text(tutor.rating)
+                    ],
+                  ),
+                  Container(
+                    child: Row(
+                      children: [
+                        Icon(IconData(0xe8c9, fontFamily:'MyFont'),size: 12,),
+                        SizedBox(width: 5,),
+                        Text('${tutor.subjects.map((e) => e.subjectName).join(", ")}',maxLines: 1,overflow: TextOverflow.ellipsis,)
                       ],
                     ),
                   ),
                   Container(
-                    margin:EdgeInsets.fromLTRB(0, 0, 0, 12),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Expanded(
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Icon(IconData(0xe8c9, fontFamily:'MyFont'),size: 15,),
-                                SizedBox(width: 5,),
-                                Text('${tutor.subjects[0].subjectName}',maxLines: 1,overflow: TextOverflow.ellipsis,)
-                              ],
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Icon(Icons.location_on_outlined,size: 15,),
-                                Flexible(child: Text(tutor.location,maxLines: 1,overflow: TextOverflow.ellipsis,),)
-                              ],
-                            ),
-                          ),
-                        ),
+                        Icon(Icons.location_on_outlined,size: 12,),
+                        SizedBox(width: 5,),
+                        Flexible(child: Text(tutor.location,maxLines: 1,overflow: TextOverflow.ellipsis,),)
                       ],
                     ),
-                  )
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(Icons.monetization_on,color: Colors.yellow,size: 12,),
+                            SizedBox(width: 5,),
+                            Text('90.0000 đ/h'),
+                          ],
+                        )),
+                        Container(
+                          width: 90,
+                          height: 25,
+                          padding: EdgeInsets.only(right: 5,bottom: 1),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: RaisedButton(
+                            color: Color.fromARGB(255,49,243,208),
+                            onPressed:(){},
+                              child: Center(child: Text('Mời dạy')),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+
                 ],
               ),
             )

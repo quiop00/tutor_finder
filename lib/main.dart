@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_learner.dart';
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
+import 'package:tutor_finder_app/ui/screens/setting/setting_view.dart';
 void main() {
   settupLocator();
   runApp(MyApp());
@@ -48,10 +49,7 @@ class _Home extends State<Home>{
       'Index 2: School',
       style: optionStyle,
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
+    SettingView(),
   ];
 
   void _onItemTapped(int index) {

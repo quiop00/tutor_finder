@@ -38,7 +38,7 @@ class _Schedule extends State<Schedule>{
             ),
           ),
           Container(
-            height: 250,
+            height: 100,
             child: ListView.builder(
                 itemBuilder: (context,i)=>
                     _timeSelected(i),

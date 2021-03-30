@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tutor_finder_app/models/subject_model.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 
 class InforTutor extends StatelessWidget{
@@ -9,6 +8,7 @@ class InforTutor extends StatelessWidget{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
+      height: 600,
       padding: EdgeInsets.only(top: 15,left: 20),
       child: SingleChildScrollView(
         child: Column(
@@ -19,6 +19,7 @@ class InforTutor extends StatelessWidget{
             _info(Icons.location_on,"Địa chỉ: "+ tutor.location),
             _info(Icons.menu_book,"Lớp: "+tutor.grades.map((e) => e.nameGrade).join(", ")),
             _info(Icons.menu_book,"Môn học: "+tutor.subjects.map((e) => e.subjectName).join(", ")),
+            _info(Icons.description, tutor.description),
             SizedBox(
               height: 50,
             )
@@ -35,7 +36,7 @@ class InforTutor extends StatelessWidget{
         children: [
           Icon(icon),
           SizedBox(width: 20,),
-          Text(text,style: TextStyle(fontSize: 15),)
+          Flexible(child: Text(text,style: TextStyle(fontSize: 15),maxLines: 10,))
         ],
       ),
     );

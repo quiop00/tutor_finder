@@ -37,7 +37,8 @@ Tutor _$TutorFromJson(Map<String, dynamic> json) {
     ..comments = (json['comments'] as List)
         ?.map((e) =>
             e == null ? null : CommentModel.fromJson(e as Map<String, dynamic>))
-        ?.toList();
+        ?.toList()
+    ..description = json['description'] as String;
 }
 
 Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
@@ -58,4 +59,5 @@ Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
       'rating': instance.rating,
       'schedule': instance.schedule,
       'comments': instance.comments,
+      'description': instance.description,
     };

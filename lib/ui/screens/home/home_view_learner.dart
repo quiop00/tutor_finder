@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view.dart';
+import 'package:tutor_finder_app/ui/screens/detail/tutor_details_view.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_model_learner.dart';
 import 'package:tutor_finder_app/ui/widget/tutor_item.dart';
 
@@ -22,85 +23,75 @@ class _HomeViewLearner extends State<HomeViewLearner> with SingleTickerProviderS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      resizeToAvoidBottomPadding: true,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            color:Color.fromRGBO(246, 246, 246,0.8),
-            child: Column(
-                mainAxisSize: MainAxisSize.min,
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255,49,243,208),
+        title: Text("Gia sư"),
+      ),
+      body: Container(
+        color:Color.fromRGBO(246, 246, 246,0.8),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
                 children: [
-                  Container(
-                    padding: EdgeInsets.all(8),
+                  Positioned(
+                      child: Container(
+                        height: 6+MediaQuery.of(context).size.height*0.06,
+                      )
+                  ),
+                  Positioned(
                     child: Container(
-                      padding: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                          color:Color.fromRGBO(244, 243, 243, 1),
-                          borderRadius: BorderRadius.circular(12)
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            prefixIcon:Icon(Icons.search,color:Colors.black54),
-                            hintText: 'Nhập tên môn học/giáo viên',
-                            hintStyle: TextStyle(color: Colors.grey,fontSize: 15.0)
-                        ),
-                      ),
+                      height: MediaQuery.of(context).size.height*0.04,
+                      color: Color.fromARGB(255,49,243,208),
                     ),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.circular(5)
-                      ),
-                      child: TabBar(
-                        isScrollable: false,
-                        indicator: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.cyan
-                        ),
-                        tabs: [
-                          Tab(child: Text('Phù hợp',style: TextStyle(color: Colors.black),),), // you can specify pages here if you want
-                          Tab(child: Text('Gần đây',style: TextStyle(color: Colors.black),),),
-                          Container(
-                              child: Tab(child: Text('Phổ biến',style: TextStyle(color: Colors.black),),)
+                  Positioned(
+                    top:5,
+                    left: MediaQuery.of(context).size.width*0.15,
+                    child: Center(
+                      child: Container(
+                          padding: EdgeInsets.all(6),
+                          width: MediaQuery.of(context).size.width*0.7,
+                          height: MediaQuery.of(context).size.height*0.06,
+                          decoration: BoxDecoration(
+                              color:Colors.white,
+                              borderRadius: BorderRadius.circular(20)
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(Icons.search,size: 18,),
+                              SizedBox(width: 5,),
+                              Text("Tìm gia sư",style: TextStyle(fontSize: 18),)
+                            ],
                           )
-                        ],
-                        controller: _tabController,
                       ),
                     ),
                   ),
-                  Flexible(
-                    fit: FlexFit.loose,
-                    child: Container(
-                      height: 370,
-                      color: Colors.white,
-                      child: TabBarView(
-                        children: [
-                          Home(),
-                          Icon(Icons.animation),
-                          Icon(Icons.search)
-                        ],
-                        controller: _tabController,
-                      ),
-                    ),
-                  ),
-                ]
-            ),
-          ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.topLeft,
+                child: Text("Gia sư nổi bật")
+              ),
+              Flexible(
+                child: Container(
+                  height: MediaQuery.of(context).size.height-130,
+                  color: Colors.white,
+                  child: TutorList(),
+                ),
+              ),
+            ]
         ),
       ),
     );
   }
 }
 // ignore: must_be_immutable
-class Home extends StatelessWidget{
+class TutorList extends StatelessWidget{
   List<Tutor> tutors;
   @override
   Widget build(BuildContext context) {
@@ -111,7 +102,6 @@ class Home extends StatelessWidget{
         viewModelBuilder:()=> HomeViewLearnerModel(),
         onModelReady: (model)=>model.getTutors(
           onLoading: (){
-
           },
           onSuccess: (){
             tutors=model.tutorsResponse.tutors;
@@ -142,7 +132,7 @@ class Home extends StatelessWidget{
               ),
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context)=>TutorDetail(tutor: tutors[index])
+                    builder: (context)=>TutorsDetail(tutor: tutors[index])
                 ));
               },
             );

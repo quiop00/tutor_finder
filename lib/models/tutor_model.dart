@@ -16,6 +16,7 @@ class Tutor extends User{
   String rating;
   List<DayScheduleTutor> schedule;
   List<CommentModel> comments;
+  String description;
   Tutor();
   factory Tutor.fromJson(Map<String,dynamic>json)=>
       _$TutorFromJson(json);
