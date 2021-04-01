@@ -5,6 +5,7 @@ import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_details_view.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_model_learner.dart';
+import 'package:tutor_finder_app/ui/screens/search/search_view.dart';
 import 'package:tutor_finder_app/ui/widget/tutor_item.dart';
 
 class HomeViewLearner extends StatefulWidget{
@@ -49,21 +50,34 @@ class _HomeViewLearner extends State<HomeViewLearner> with SingleTickerProviderS
                     top:5,
                     left: MediaQuery.of(context).size.width*0.15,
                     child: Center(
-                      child: Container(
-                          padding: EdgeInsets.all(6),
-                          width: MediaQuery.of(context).size.width*0.7,
-                          height: MediaQuery.of(context).size.height*0.06,
-                          decoration: BoxDecoration(
-                              color:Colors.white,
-                              borderRadius: BorderRadius.circular(20)
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.search,size: 18,),
-                              SizedBox(width: 5,),
-                              Text("Tìm gia sư",style: TextStyle(fontSize: 18),)
-                            ],
-                          )
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchView()));
+                        },
+                        child: Container(
+                            padding: EdgeInsets.all(6),
+                            width: MediaQuery.of(context).size.width*0.7,
+                            height: MediaQuery.of(context).size.height*0.06,
+                            decoration: BoxDecoration(
+                                color:Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow:[
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3), //color of shadow
+                                    spreadRadius: 2, //spread radius
+                                    blurRadius: 2, // blur radius
+                                    offset: Offset(0, 1), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(Icons.search,size: 18,),
+                                SizedBox(width: 5,),
+                                Text("Tìm gia sư",style: TextStyle(fontSize: 18),)
+                              ],
+                            )
+                        ),
                       ),
                     ),
                   ),

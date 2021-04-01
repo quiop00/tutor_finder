@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_learner.dart';
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
+import 'package:tutor_finder_app/ui/screens/register/register_view.dart';
+import 'package:tutor_finder_app/ui/screens/search/search_view.dart';
 import 'package:tutor_finder_app/ui/screens/setting/setting_view.dart';
+import 'package:tutor_finder_app/ui/screens/welcome/welcome_view.dart';
 void main() {
   settupLocator();
   runApp(MyApp());
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Home(),
+      home: RegisterView(),
     );
   }
 }
@@ -38,9 +41,8 @@ class _Home extends State<Home>{
     CupertinoTabView(
         builder: (context)=> HomeViewLearner()
     ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
+    CupertinoTabView(
+      builder: (context)=>SearchView(),
     ),
     CupertinoTabView(
       builder: (context)=>NotificationView(),
@@ -49,7 +51,9 @@ class _Home extends State<Home>{
       'Index 2: School',
       style: optionStyle,
     ),
-    SettingView(),
+    CupertinoTabView(
+      builder: (context)=>SettingView(),
+    ),
   ];
 
   void _onItemTapped(int index) {
@@ -69,8 +73,8 @@ class _Home extends State<Home>{
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book_rounded,size: 30,),
-              label: 'Study',
+              icon: Icon(Icons.search_rounded,size: 30,),
+              label: 'Search',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.notifications,size: 30,),
