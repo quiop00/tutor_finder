@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_learner.dart';
+import 'package:tutor_finder_app/ui/screens/login/login_view.dart';
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
 import 'package:tutor_finder_app/ui/screens/register/register_view.dart';
 import 'package:tutor_finder_app/ui/screens/search/search_view.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: RegisterView(),
+      home: LoginView(),
     );
   }
 }
