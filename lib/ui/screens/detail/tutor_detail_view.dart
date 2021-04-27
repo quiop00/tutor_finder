@@ -80,7 +80,7 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                             ),
                           ),
                           onTap: (){
-
+                            
                           },
                         ),
                         SizedBox(width: 20,),

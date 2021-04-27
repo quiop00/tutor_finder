@@ -35,6 +35,8 @@ dependencies:
   retrofit: any
   provider: any
   intl: any
+  shared_preferences: ^2.0.5
+  flutter_spinkit: ^3.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

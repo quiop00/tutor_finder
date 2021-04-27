@@ -5,7 +5,6 @@ class RegisterView extends StatefulWidget{
   State<StatefulWidget> createState() {
     return _RegisterView();
   }
-
 }
 class _RegisterView extends State<RegisterView>{
   TextEditingController nameController;

@@ -1,1 +1,1 @@
-String get BASE_API_URL => 'https://my-json-server.typicode.com/quiop00/api';
+String get BASE_API_URL => 'https://manage-tutor-123.herokuapp.com/api';

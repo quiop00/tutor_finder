@@ -2,8 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'login_response.g.dart';
 @JsonSerializable()
 class LoginResponse{
-  String auth;
-  String token;
+  List<String> role;
+  String accessToken;
   LoginResponse();
   factory LoginResponse.fromJson(Map<String,dynamic> json){
     return _$LoginResponseFromJson(json);

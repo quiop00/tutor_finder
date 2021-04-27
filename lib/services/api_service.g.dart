@@ -9,7 +9,7 @@ part of 'api_service.dart';
 class _ApiClient implements ApiClient {
   _ApiClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'https://my-json-server.typicode.com/quiop00/api';
+    baseUrl ??= 'https://manage-tutor-123.herokuapp.com/api';
   }
 
   final Dio _dio;
@@ -17,14 +17,13 @@ class _ApiClient implements ApiClient {
   String baseUrl;
 
   @override
-  Future<LoginResponse> checkLogin(username, password) async {
-    ArgumentError.checkNotNull(username, 'username');
-    ArgumentError.checkNotNull(password, 'password');
+  Future<LoginResponse> checkLogin(loginBody) async {
+    ArgumentError.checkNotNull(loginBody, 'loginBody');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>(
-        '/login?username=$username&password=$password',
+    _data.addAll(loginBody?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('/auth/signin',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',

@@ -2,17 +2,18 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
+import 'package:tutor_finder_app/services/body/login_body.dart';
 import 'package:tutor_finder_app/services/response/tutors_response.dart';
 import 'package:tutor_finder_app/settings.dart' as settings;
 import 'response/login_response.dart';
 import 'response/notification_response.dart';
 import 'response/posts_response.dart';
 part 'api_service.g.dart';
-@RestApi(baseUrl:"https://my-json-server.typicode.com/quiop00/api")
+@RestApi(baseUrl:"https://manage-tutor-123.herokuapp.com/api")
 abstract class ApiClient{
   factory ApiClient(Dio dio,{String baseUrl})=_ApiClient;
-  @POST('/login?username={username}&password={password}')
-  Future<LoginResponse> checkLogin(@Path('username') String username,@Path('password') String password);
+  @POST('/auth/signin')
+  Future<LoginResponse> checkLogin(@Body() LoginBody loginBody);
   @GET('/getPosts')
   Future<PostsResponse> getPosts();
   @GET('/db')

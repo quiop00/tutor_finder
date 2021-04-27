@@ -14,8 +14,8 @@ class TutorElement extends StatelessWidget{
         child: Row(
           children: [
             Container(
-              width: 90,
-              height: 90,
+              width: 100,
+              height: 100,
               margin: EdgeInsets.all(12),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
@@ -34,7 +34,7 @@ class TutorElement extends StatelessWidget{
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Expanded(child: Text(tutor.name,style: TextStyle(fontSize: 15),)),
+                        Expanded(child: Text("tutor.name",style: TextStyle(fontSize: 15),)),
                         Icon(Icons.favorite_border)
                       ],
                     ),
