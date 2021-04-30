@@ -36,6 +36,27 @@ class _ApiClient implements ApiClient {
   }
 
   @override
+  Future<RegisterResponse> register(registerBody) async {
+    ArgumentError.checkNotNull(registerBody, 'registerBody');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(registerBody?.toJson() ?? <String, dynamic>{});
+    print(_data);
+    final _result = await _dio.request<Map<String, dynamic>>('/auth/signup',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    print(_result.data);
+    final value = RegisterResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
   Future<PostsResponse> getPosts() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

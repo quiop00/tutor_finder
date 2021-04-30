@@ -20,6 +20,7 @@ class LoginViewModel extends BaseViewModel{
         loginResponse=value;
         status=true;
         print(loginResponse.toJson());
+
     }).catchError((Object obj){
       switch (obj.runtimeType) {
         case DioError:
@@ -33,9 +34,12 @@ class LoginViewModel extends BaseViewModel{
           break;
       }
       status=false;
+
     });
-    if(status)
-      PreferenceUtils.setString('token', 'Bearer'+loginResponse.accessToken);
+    if(status){
+      await  PreferenceUtils.setString('token', 'Bearer '+loginResponse.accessToken);
+    }
+    else await PreferenceUtils.setString('token', 'Bearer');
     print(PreferenceUtils.getString('token'));
     setBusy(false);
     notifyListeners();

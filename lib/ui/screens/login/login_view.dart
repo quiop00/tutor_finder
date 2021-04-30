@@ -170,16 +170,16 @@ class _LoginView extends State<LoginView>{
                       ),
                     ),
                     onPressed: (){
-
+                       Navigator.pushNamed(context, '/register');
                     },
                   ),
                 ),
                 Positioned(
-                    top: MediaQuery.of(context).size.height*0.48,
-                    left: MediaQuery.of(context).size.width*0.48,
+                    top: MediaQuery.of(context).size.height*0.38,
+                    left: MediaQuery.of(context).size.width*0.44,
                     child: Visibility(
                       visible: model.isBusy,
-                      child: SpinKitCircle(color: Colors.greenAccent,)
+                      child: SpinKitCircle(color: Colors.redAccent,)
                     )
                 )
               ],
