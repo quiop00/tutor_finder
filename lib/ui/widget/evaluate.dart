@@ -15,32 +15,11 @@ class _EvaluateWidget extends State<EvaluateWidget>{
   TextEditingController commentTextEditController=TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return tutor.comments!=null?Container(
       height: 360,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Container(
-          //   padding: EdgeInsets.all(10),
-          //   child: Row(
-          //       children: [
-          //         Container(
-          //           width: MediaQuery.of(context).size.width-60,
-          //           child: TextField(
-          //             controller: commentTextEditController,
-          //           ),
-          //         ),
-          //         Expanded(
-          //           child: IconButton(
-          //             icon: Icon(Icons.send),
-          //             onPressed: (){
-          //               // code comment here
-          //             },
-          //           ),
-          //         )
-          //       ],
-          //     ),
-          // ),
           Expanded(
             child: Container(
               height: 360,
@@ -52,7 +31,7 @@ class _EvaluateWidget extends State<EvaluateWidget>{
           )
         ],
       ),
-    );
+    ):Container();
   }
   Widget _comment(int index)=>
       Card(

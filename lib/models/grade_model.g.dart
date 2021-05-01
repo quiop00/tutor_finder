@@ -8,11 +8,11 @@ part of 'grade_model.dart';
 
 Grade _$GradeFromJson(Map<String, dynamic> json) {
   return Grade()
-    ..gradeId = json['gradeId'] as String
-    ..nameGrade = json['nameGrade'] as String;
+    ..gradeId = json['id'] as int
+    ..nameGrade = json['gradename'] as String;
 }
 
 Map<String, dynamic> _$GradeToJson(Grade instance) => <String, dynamic>{
-      'gradeId': instance.gradeId,
-      'nameGrade': instance.nameGrade,
+      'id': instance.gradeId,
+      'gradename': instance.nameGrade,
     };

@@ -11,14 +11,14 @@ class SearchView extends StatefulWidget{
   State<StatefulWidget> createState() {
     return _SearchView();
   }
-
 }
 class _SearchView extends State<SearchView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tìm kiếm giáo viên'),
+        title: Text('Tìm kiếm gia sư'),
+        backgroundColor:Color.fromARGB(255,49,243,208),
       ),
       body: Container(
         color: Colors.white,

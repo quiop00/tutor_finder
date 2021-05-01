@@ -20,7 +20,7 @@ class TutorElement extends StatelessWidget{
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: NetworkImage(tutor.avatarPath),
+                      image: NetworkImage(tutor.getAvatar()),
                       fit: BoxFit.cover
                   )
               ),
@@ -60,7 +60,7 @@ class TutorElement extends StatelessWidget{
                       children: [
                         Icon(Icons.location_on_outlined,size: 12,),
                         SizedBox(width: 5,),
-                        Flexible(child: Text(tutor.location,maxLines: 1,overflow: TextOverflow.ellipsis,),)
+                        Flexible(child: Text(tutor.address,maxLines: 1,overflow: TextOverflow.ellipsis,),)
                       ],
                     ),
                   ),

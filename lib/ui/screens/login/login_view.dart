@@ -137,7 +137,7 @@ class _LoginView extends State<LoginView>{
 
                       await model.checkLogin(loginBody);
                       if(model.status){
-                        print("Đăng nhập thành công");
+                        Navigator.pushNamed(context, '/home');
                       }
                       else{
                         dialog.showAlertDialog(context, "Lỗi đăng nhập",model.errorMessage);

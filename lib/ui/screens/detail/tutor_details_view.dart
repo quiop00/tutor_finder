@@ -96,12 +96,12 @@ class _TutorDetail extends State<TutorsDetail> with SingleTickerProviderStateMix
                                         decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
-                                                image: NetworkImage(tutor.avatarPath),
+                                                image: NetworkImage(tutor.getAvatar()),
                                                 fit: BoxFit.cover
                                             )
                                         ),
                                       ),
-                                      Text(tutor.name),
+                                      Text('${tutor.name}'),
                                     ],
                                   )
                               ),
@@ -246,7 +246,7 @@ class _TutorDetail extends State<TutorsDetail> with SingleTickerProviderStateMix
                                   children: [
                                     Icon(Icons.location_on,size: 15,),
                                     SizedBox(width: 8,),
-                                    Flexible(child: Text('${tutor.location}',maxLines: 1,overflow: TextOverflow.ellipsis,))
+                                    Flexible(child: Text('${tutor.address}',maxLines: 1,overflow: TextOverflow.ellipsis,))
                                   ],
                                 ),
                               )
@@ -335,10 +335,10 @@ class _TutorDetail extends State<TutorsDetail> with SingleTickerProviderStateMix
                                   ),
                                 ]
                             ),
-                            Container(
-                              padding: EdgeInsets.all(10),
-                              child: Schedule(schedules: tutor.schedule,),
-                            )
+                            // Container(
+                            //   padding: EdgeInsets.all(10),
+                            //   child: Schedule(schedules: tutor.schedule,),
+                            // )
                           ],
                         ),
                       ),

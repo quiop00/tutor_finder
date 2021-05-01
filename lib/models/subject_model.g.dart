@@ -8,11 +8,11 @@ part of 'subject_model.dart';
 
 Subject _$SubjectFromJson(Map<String, dynamic> json) {
   return Subject()
-    ..id = json['id'] as String
-    ..subjectName = json['subjectName'] as String;
+    ..id = json['id'] as int
+    ..subjectName = json['subjectname'] as String;
 }
 
 Map<String, dynamic> _$SubjectToJson(Subject instance) => <String, dynamic>{
       'id': instance.id,
-      'subjectName': instance.subjectName,
+      'subjectname': instance.subjectName,
     };

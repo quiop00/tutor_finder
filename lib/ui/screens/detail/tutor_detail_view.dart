@@ -2,13 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
+import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_detail_view_model.dart';
 import 'package:tutor_finder_app/ui/widget/evaluate.dart';
 import 'package:tutor_finder_app/ui/widget/infor.dart';
 import 'package:tutor_finder_app/ui/widget/schedule.dart';
 
 class TutorDetail extends StatefulWidget{
-  final tutor;
+  final Tutor tutor;
   TutorDetail({this.tutor});
   @override
   State<StatefulWidget> createState() {
@@ -17,7 +18,7 @@ class TutorDetail extends StatefulWidget{
   }
 }
 class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixin{
-  final tutor;
+  final Tutor tutor;
   _TutorDetail({this.tutor});
   TabController _tabController;
   @override
@@ -55,7 +56,7 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                 flexibleSpace: FlexibleSpaceBar(
                   title: Text(tutor.name),
                   background: Image.network(
-                    tutor.avatarPath,fit: BoxFit.cover,
+                    tutor.getAvatar(),fit: BoxFit.cover,
                   ),
                 ),
                 bottom: PreferredSize(
@@ -132,7 +133,7 @@ class _TutorDetail extends State<TutorDetail> with SingleTickerProviderStateMixi
                                         controller: _tabController,
                                         children: [
                                           InforTutor(tutor: tutor,),
-                                          Schedule(schedules: tutor.schedule,),
+                                          //Schedule(schedules: tutor.schedule,),
                                           EvaluateWidget(tutor: tutor,)
                                         ],
                                       ),

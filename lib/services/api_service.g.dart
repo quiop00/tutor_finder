@@ -42,7 +42,6 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(registerBody?.toJson() ?? <String, dynamic>{});
-    print(_data);
     final _result = await _dio.request<Map<String, dynamic>>('/auth/signup',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -51,8 +50,26 @@ class _ApiClient implements ApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    print(_result.data);
     final value = RegisterResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<AddPostResponse> post(postBody) async {
+    ArgumentError.checkNotNull(postBody, 'postBody');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(postBody?.toJson() ?? <String, dynamic>{});
+    final _result = await _dio.request<Map<String, dynamic>>('/post',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = AddPostResponse.fromJson(_result.data);
     return value;
   }
 
@@ -78,7 +95,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/db',
+    final _result = await _dio.request<Map<String, dynamic>>('/tutor',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',

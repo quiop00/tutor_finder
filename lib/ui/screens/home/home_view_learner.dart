@@ -115,15 +115,10 @@ class TutorList extends StatelessWidget{
         builder:(context,model,child)=>_listTutors,
         viewModelBuilder:()=> HomeViewLearnerModel(),
         onModelReady: (model)=>model.getTutors(
-          onLoading: (){
-          },
           onSuccess: (){
             tutors=model.tutorsResponse.tutors;
             //print(model.tutorsResponse.toJson());
           },
-          onError: (error){
-            print('Loi');
-          }
         ),
       ),
     );

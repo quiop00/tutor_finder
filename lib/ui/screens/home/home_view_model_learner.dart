@@ -11,7 +11,6 @@ class HomeViewLearnerModel extends BaseViewModel{
   VoidCallback onSuccess;
   VoidCallback onLoading;
   Function(String) onError;
-
   //HomePageViewModel(){} ;
   void getTutors(
       {VoidCallback onLoading,

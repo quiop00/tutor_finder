@@ -16,7 +16,7 @@ class InforTutor extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _info(Icons.person_outline,"Họ tên: "+tutor.name),
-            _info(Icons.location_on,"Địa chỉ: "+ tutor.location),
+            _info(Icons.location_on,"Địa chỉ: "+ tutor.address),
             _info(Icons.menu_book,"Lớp: "+tutor.grades.map((e) => e.nameGrade).join(", ")),
             _info(Icons.menu_book,"Môn học: "+tutor.subjects.map((e) => e.subjectName).join(", ")),
             _info(Icons.description, tutor.description),
