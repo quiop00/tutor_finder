@@ -9,8 +9,9 @@ part of 'tutors_response.dart';
 TutorsResponse _$TutorsResponseFromJson(Map<String, dynamic> json) {
   return TutorsResponse()
     ..tutors = (json['tutors'] as List)
-        ?.map(
-            (e) => e == null ? null : Tutor.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null
+            ? null
+            : TutorResponse.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 

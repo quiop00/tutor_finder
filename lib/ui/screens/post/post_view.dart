@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
+import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
 
 class PostView extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class PostView extends StatefulWidget {
 }
 
 class _PostView extends State<PostView> {
-  GlobalKey<FormState> _form = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Schedule> schedules = [];
   @override
   void initState() {
@@ -39,7 +40,32 @@ class _PostView extends State<PostView> {
                   children: [
                     Text('Đăng yêu cầu này ngay'),
                     ElevatedButton(
-                        onPressed: () {}, child: Text('Đăng yêu cầu'))
+                        onPressed: () async {
+                          if (!_formKey.currentState.validate()) {
+                            return;
+                          }
+                          _formKey.currentState.save();
+                          var count = 0;
+                          for (var schedule in model.schedules) {
+                            if (schedule.morning ||
+                                schedule.afternoon ||
+                                schedule.night) {
+                              count++;
+                            }
+                          }
+                          if (count == 0) {
+                            dialog.showAlertDialog(context, 'Lỗi đăng bài',
+                                'Vui lòng chọn buổi học');
+                            return;
+                          }
+                          await dialog.onLoading(context);
+                          await model.post();
+                          dialog.showAlertDialog(
+                              context, 'Thông báo', model.message);
+                          if(model.message=="OK")
+                            Navigator.pushNamed(context, '/home');
+                        },
+                        child: Text('Đăng yêu cầu'))
                   ],
                 ),
               ),
@@ -47,7 +73,7 @@ class _PostView extends State<PostView> {
                 child: Container(
                   color: Colors.white,
                   child: Form(
-                    key: _form,
+                    key: _formKey,
                     child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,14 +124,15 @@ class _PostView extends State<PostView> {
                                         child: Center(
                                           child: TextFormField(
                                             validator: (input) {
-                                              if (input.isEmpty)
-                                                return 'Không được để trống';
+                                              if (input.isEmpty) return '';
                                               return null;
                                             },
                                             onSaved: (input) {
                                               model.postBody.title = input;
                                             },
                                             decoration: InputDecoration(
+                                                errorStyle:
+                                                    TextStyle(height: 0),
                                                 contentPadding:
                                                     EdgeInsets.all(10),
                                                 border: InputBorder.none,
@@ -151,7 +178,7 @@ class _PostView extends State<PostView> {
                                   _formField(Icons.book, 'Môn học',
                                       validator: (input) {
                                     if (input.length == 0) {
-                                      return 'Không được bỏ trống';
+                                      return '';
                                     }
                                     return null;
                                   }, onSaved: (input) {
@@ -160,7 +187,7 @@ class _PostView extends State<PostView> {
                                   _formField(Icons.note_add, 'Chủ đề',
                                       validator: (input) {
                                     if (input.length == 0) {
-                                      return 'Không được bỏ trống';
+                                      return '';
                                     }
                                     return null;
                                   }, onSaved: (input) {
@@ -170,7 +197,7 @@ class _PostView extends State<PostView> {
                                       'Học phí dự kiến (VND/buổi)',
                                       validator: (input) {
                                     if (input.length == 0) {
-                                      return 'Không được bỏ trống';
+                                      return '';
                                     }
                                     return null;
                                   }, onSaved: (input) {
@@ -189,7 +216,7 @@ class _PostView extends State<PostView> {
                                   _formField(Icons.home, 'Địa chỉ cụ thể',
                                       validator: (input) {
                                     if (input.isEmpty) {
-                                      return 'Không được bỏ trống';
+                                      return '';
                                     }
                                     return null;
                                   }, onSaved: (input) {
@@ -225,12 +252,12 @@ class _PostView extends State<PostView> {
                               child: TextFormField(
                                 validator: (input) {
                                   if (input.length == 0) {
-                                    return 'Không được bỏ trống';
+                                    return '';
                                   }
                                   return null;
                                 },
                                 onSaved: (input) {
-                                  model.postBody.subject = input;
+                                  model.postBody.description = input;
                                 },
                                 maxLines: 10,
                                 decoration: InputDecoration(
@@ -299,6 +326,7 @@ class _PostView extends State<PostView> {
               validator: validator,
               onSaved: onSaved,
               decoration: InputDecoration(
+                errorStyle: TextStyle(height: 0),
                 hintText: hintText,
                 contentPadding: EdgeInsets.symmetric(horizontal: 15),
                 hintStyle: TextStyle(color: Colors.grey[400]),

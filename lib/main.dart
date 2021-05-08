@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_learner.dart';
+import 'package:tutor_finder_app/ui/screens/invitation/invitation_view.dart';
 import 'package:tutor_finder_app/ui/screens/login/login_view.dart';
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view.dart';
+import 'package:tutor_finder_app/ui/screens/profile/profile_view.dart';
 import 'package:tutor_finder_app/ui/screens/register/register_view.dart';
 import 'package:tutor_finder_app/ui/screens/search/search_view.dart';
 import 'package:tutor_finder_app/ui/screens/setting/setting_view.dart';
@@ -26,12 +28,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/post',
+      initialRoute: '/login',
       routes: {
         '/login': (context) => LoginView(),
         '/register': (context) => RegisterView(),
         '/home': (context) => Home(),
-        '/post': (context) => PostView()
+        '/post': (context) => PostView(),
+        '/profile': (context) => ProfileView(),
+        '/invitation': (context) => InvitationView()
       },
       home: PostView(),
     );
@@ -64,7 +68,7 @@ class _Home extends State<Home> {
       style: optionStyle,
     ),
     CupertinoTabView(
-      builder: (context) => SettingView(),
+      builder: (context) => ProfileView(),
     ),
   ];
 

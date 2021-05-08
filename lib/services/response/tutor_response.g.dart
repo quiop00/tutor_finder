@@ -1,26 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'tutor_model.dart';
+part of 'tutor_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Tutor _$TutorFromJson(Map<String, dynamic> json) {
-  return Tutor()
+TutorResponse _$TutorResponseFromJson(Map<String, dynamic> json) {
+  return TutorResponse()
     ..id = json['id'] as int
-    ..userName = json['userName'] as String
-    ..password = json['password'] as String
-    ..email = json['email'] as String
-    ..phoneNumber = json['phoneNumber'] as String
-    ..age = json['age'] as int
-    ..gender = json['gender'] as bool
     ..name = json['name'] as String
+    ..phoneNumber = json['phoneNumber'] as String
     ..avatar = json['avatar'] as String
     ..qualification = json['qualification'] as String
     ..subjects = (json['subjects'] as List)?.map((e) => e as String)?.toList()
     ..address = json['address'] as String
-    ..grades = (json['grades'] as List)?.map((e) => e as String)?.toList()
+    ..grades = (json['grades'] as List)
+        ?.map(
+            (e) => e == null ? null : Grade.fromJson(e as Map<String, dynamic>))
+        ?.toList()
     ..rating = json['rating'] as String
     ..schedule = (json['schedule'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as bool),
@@ -32,15 +30,11 @@ Tutor _$TutorFromJson(Map<String, dynamic> json) {
     ..description = json['description'] as String;
 }
 
-Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
+Map<String, dynamic> _$TutorResponseToJson(TutorResponse instance) =>
+    <String, dynamic>{
       'id': instance.id,
-      'userName': instance.userName,
-      'password': instance.password,
-      'email': instance.email,
-      'phoneNumber': instance.phoneNumber,
-      'age': instance.age,
-      'gender': instance.gender,
       'name': instance.name,
+      'phoneNumber': instance.phoneNumber,
       'avatar': instance.avatar,
       'qualification': instance.qualification,
       'subjects': instance.subjects,

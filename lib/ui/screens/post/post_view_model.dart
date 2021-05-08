@@ -8,11 +8,12 @@ import 'package:tutor_finder_app/services/locator_getit.dart';
 class PostViewModel extends BaseViewModel {
   final _api = locator<Api>();
   PostBody postBody = PostBody();
-  String message;
+  String message = 'OK';
   List<Schedule> schedules = Schedule.initSchedules();
   post() async {
     setBusy(true);
     covertScheduleToJson();
+    print(postBody.toJson());
     await _api.client.post(postBody).then((value) {
       message = value.message;
     }).catchError((Object obj) {
@@ -29,6 +30,7 @@ class PostViewModel extends BaseViewModel {
   }
 
   void covertScheduleToJson() {
+    postBody.schedule = {};
     postBody.schedule['sang_2'] = schedules[0].morning;
     postBody.schedule['chieu_2'] = schedules[0].afternoon;
     postBody.schedule['toi_2'] = schedules[0].night;
@@ -51,4 +53,6 @@ class PostViewModel extends BaseViewModel {
     postBody.schedule['chieu_CN'] = schedules[6].afternoon;
     postBody.schedule['toi_CN'] = schedules[6].night;
   }
+
+  void scheduleFromJson() {}
 }

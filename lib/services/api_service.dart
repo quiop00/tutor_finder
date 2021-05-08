@@ -3,11 +3,14 @@ import 'package:retrofit/retrofit.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/services/body/login_body.dart';
 import 'package:tutor_finder_app/services/body/register_body.dart';
+import 'package:tutor_finder_app/services/body/tutor_body.dart';
 import 'package:tutor_finder_app/services/response/add_post_response.dart';
 import 'package:tutor_finder_app/services/response/register_response.dart';
+import 'package:tutor_finder_app/services/response/tutor_response.dart';
 import 'package:tutor_finder_app/services/response/tutors_response.dart';
 import 'package:tutor_finder_app/settings.dart' as settings;
 import 'body/post_body.dart';
+import 'body/user_body.dart';
 import 'local_storage_service.dart';
 import 'response/login_response.dart';
 import 'response/notification_response.dart';
@@ -23,15 +26,43 @@ abstract class ApiClient {
   Future<RegisterResponse> register(@Body() RegisterBody registerBody);
   @POST('/post')
   Future<AddPostResponse> post(@Body() PostBody postBody);
-  @GET('/getPosts')
+  @GET('/post')
   Future<PostsResponse> getPosts();
   @GET('/tutor')
   Future<TutorsResponse> getTutors();
-  @GET('/tutor?id={idTutor}')
-  Future<Tutor> getTutorById(@Path('idTutor') String id);
-  //fake api notifications
-  @GET('/db')
-  Future<NotificationResponse> getNotifiesById();
+  @GET('/tutor/profile')
+  Future<TutorResponse> getTutorProfile();
+  @PUT('/tutor')
+  Future<void> updateTutor(@Body() TutorBody tutorBody);
+  @GET('/user/profile')
+  Future<UserBody> getUserProfile();
+  @PUT('/user')
+  Future<void> updateUser(@Body() UserBody userBody);
+  @POST('/invitation/{id}')
+  Future<void> invite(@Path() int id);
+  @PUT('/invitation/acceptance')
+  Future<void> acceptInvitation(@Body() Map<String, dynamic> data);
+  @PUT('/invitation/denial')
+  Future<void> denyInvitation(@Body() Map<String, dynamic> data);
+  @POST('/comment')
+  Future<void> comment(@Body() Map<String, dynamic> comment);
+  @GET('/user/{id}')
+  Future<UserBody> getUserById(@Path() int id);
+  @GET('/tutor/{id}')
+  Future<TutorResponse> getTutorById(@Path() int id);
+  @POST('/suggestion')
+  Future<void> addSuggestion(
+      @Query('idStudent') int idStudent, @Query('idPost') int idPost);
+  @PUT('/suggestion/acceptance')
+  Future<void> acceptSuggestion(
+      @Query('idPost') int idPost, @Query('idTutor') int idTutor);
+  @PUT('/suggestion/denial')
+  Future<void> denySuggestion(
+      @Query('idPost') int idPost, @Query('idTutor') int idTutor);
+  @PUT('/post/{idPost}')
+  Future<void> updatePost(@Path() int idPost, @Body() PostBody postBody);
+  @DELETE('/post/{id}')
+  Future<void> deletePost(@Path() int idPost);
 }
 
 class Api {

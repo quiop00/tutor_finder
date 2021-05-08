@@ -78,7 +78,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/getPosts',
+    final _result = await _dio.request<Map<String, dynamic>>('/post',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -108,12 +108,11 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<Tutor> getTutorById(id) async {
-    ArgumentError.checkNotNull(id, 'id');
+  Future<TutorResponse> getTutorProfile() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/tutor?id=$id',
+    final _result = await _dio.request<Map<String, dynamic>>('/tutor/profile',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -121,16 +120,34 @@ class _ApiClient implements ApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = Tutor.fromJson(_result.data);
+    final value = TutorResponse.fromJson(_result.data);
     return value;
   }
 
   @override
-  Future<NotificationResponse> getNotifiesById() async {
+  Future<void> updateTutor(tutorBody) async {
+    ArgumentError.checkNotNull(tutorBody, 'tutorBody');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/db',
+    _data.addAll(tutorBody?.toJson() ?? <String, dynamic>{});
+    await _dio.request<void>('/tutor',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<UserBody> getUserProfile() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/user/profile',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -138,7 +155,231 @@ class _ApiClient implements ApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = NotificationResponse.fromJson(_result.data);
+    final value = UserBody.fromJson(_result.data);
     return value;
+  }
+
+  @override
+  Future<void> updateUser(userBody) async {
+    ArgumentError.checkNotNull(userBody, 'userBody');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(userBody?.toJson() ?? <String, dynamic>{});
+    await _dio.request<void>('/user',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> invite(id) async {
+    ArgumentError.checkNotNull(id, 'id');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    await _dio.request<void>('/invitation/$id',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> acceptInvitation(data) async {
+    ArgumentError.checkNotNull(data, 'data');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data ?? <String, dynamic>{});
+    await _dio.request<void>('/invitation/acceptance',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> denyInvitation(data) async {
+    ArgumentError.checkNotNull(data, 'data');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(data ?? <String, dynamic>{});
+    await _dio.request<void>('/invitation/denial',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> comment(comment) async {
+    ArgumentError.checkNotNull(comment, 'comment');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(comment ?? <String, dynamic>{});
+    await _dio.request<void>('/comment',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<UserBody> getUserById(id) async {
+    ArgumentError.checkNotNull(id, 'id');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/user/$id',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = UserBody.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<TutorResponse> getTutorById(id) async {
+    ArgumentError.checkNotNull(id, 'id');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/tutor/$id',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = TutorResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<void> addSuggestion(idStudent, idPost) async {
+    ArgumentError.checkNotNull(idStudent, 'idStudent');
+    ArgumentError.checkNotNull(idPost, 'idPost');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'idStudent': idStudent,
+      r'idPost': idPost
+    };
+    final _data = <String, dynamic>{};
+    await _dio.request<void>('/suggestion',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> acceptSuggestion(idPost, idTutor) async {
+    ArgumentError.checkNotNull(idPost, 'idPost');
+    ArgumentError.checkNotNull(idTutor, 'idTutor');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'idPost': idPost,
+      r'idTutor': idTutor
+    };
+    final _data = <String, dynamic>{};
+    await _dio.request<void>('/suggestion/acceptance',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> denySuggestion(idPost, idTutor) async {
+    ArgumentError.checkNotNull(idPost, 'idPost');
+    ArgumentError.checkNotNull(idTutor, 'idTutor');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'idPost': idPost,
+      r'idTutor': idTutor
+    };
+    final _data = <String, dynamic>{};
+    await _dio.request<void>('/suggestion/denial',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> updatePost(idPost, postBody) async {
+    ArgumentError.checkNotNull(idPost, 'idPost');
+    ArgumentError.checkNotNull(postBody, 'postBody');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(postBody?.toJson() ?? <String, dynamic>{});
+    await _dio.request<void>('/post/$idPost',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'PUT',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<void> deletePost(idPost) async {
+    ArgumentError.checkNotNull(idPost, 'idPost');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    await _dio.request<void>('/post/{id}',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'DELETE',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
   }
 }
