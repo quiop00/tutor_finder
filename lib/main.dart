@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_learner.dart';
+import 'package:tutor_finder_app/ui/screens/home/home_view_tutor.dart';
 import 'package:tutor_finder_app/ui/screens/invitation/invitation_view.dart';
 import 'package:tutor_finder_app/ui/screens/login/login_view.dart';
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
@@ -37,7 +38,6 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfileView(),
         '/invitation': (context) => InvitationView()
       },
-      home: PostView(),
     );
   }
 }
@@ -56,7 +56,7 @@ class _Home extends State<Home> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    CupertinoTabView(builder: (context) => HomeViewLearner()),
+    CupertinoTabView(builder: (context) => HomeViewTutor()),
     CupertinoTabView(
       builder: (context) => SearchView(),
     ),

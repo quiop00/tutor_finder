@@ -9,7 +9,7 @@ part of 'api_service.dart';
 class _ApiClient implements ApiClient {
   _ApiClient(this._dio, {this.baseUrl}) {
     ArgumentError.checkNotNull(_dio, '_dio');
-    baseUrl ??= 'https://manage-tutor-123.herokuapp.com/api';
+    baseUrl ??= 'https://manage-tutor-123.herokuapp.com';
   }
 
   final Dio _dio;
@@ -23,7 +23,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(loginBody?.toJson() ?? <String, dynamic>{});
-    final _result = await _dio.request<Map<String, dynamic>>('/auth/signin',
+    final _result = await _dio.request<Map<String, dynamic>>('/api/auth/signin',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -42,7 +42,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(registerBody?.toJson() ?? <String, dynamic>{});
-    final _result = await _dio.request<Map<String, dynamic>>('/auth/signup',
+    final _result = await _dio.request<Map<String, dynamic>>('/api/auth/signup',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -61,7 +61,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(postBody?.toJson() ?? <String, dynamic>{});
-    final _result = await _dio.request<Map<String, dynamic>>('/post',
+    final _result = await _dio.request<Map<String, dynamic>>('/api/post',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -78,7 +78,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/post',
+    final _result = await _dio.request<Map<String, dynamic>>('/api/post',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -112,7 +112,8 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/tutor/profile',
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/api/tutor/profile',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -131,7 +132,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(tutorBody?.toJson() ?? <String, dynamic>{});
-    await _dio.request<void>('/tutor',
+    await _dio.request<void>('/api/tutor',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -147,7 +148,8 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/user/profile',
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/api/user/profile',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -166,7 +168,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(userBody?.toJson() ?? <String, dynamic>{});
-    await _dio.request<void>('/user',
+    await _dio.request<void>('/api/user',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -183,7 +185,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/invitation/$id',
+    await _dio.request<void>('/api/invitation/$id',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -201,7 +203,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data ?? <String, dynamic>{});
-    await _dio.request<void>('/invitation/acceptance',
+    await _dio.request<void>('/api/invitation/acceptance',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -219,7 +221,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(data ?? <String, dynamic>{});
-    await _dio.request<void>('/invitation/denial',
+    await _dio.request<void>('/api/invitation/denial',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -237,7 +239,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(comment ?? <String, dynamic>{});
-    await _dio.request<void>('/comment',
+    await _dio.request<void>('/api/comment',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -254,7 +256,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/user/$id',
+    final _result = await _dio.request<Map<String, dynamic>>('/api/user/$id',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -272,7 +274,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/tutor/$id',
+    final _result = await _dio.request<Map<String, dynamic>>('/api/tutor/$id',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -294,7 +296,7 @@ class _ApiClient implements ApiClient {
       r'idPost': idPost
     };
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/suggestion',
+    await _dio.request<void>('/api/suggestion',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -315,7 +317,7 @@ class _ApiClient implements ApiClient {
       r'idTutor': idTutor
     };
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/suggestion/acceptance',
+    await _dio.request<void>('/api/suggestion/acceptance',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -336,7 +338,7 @@ class _ApiClient implements ApiClient {
       r'idTutor': idTutor
     };
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/suggestion/denial',
+    await _dio.request<void>('/api/suggestion/denial',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -355,7 +357,7 @@ class _ApiClient implements ApiClient {
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(postBody?.toJson() ?? <String, dynamic>{});
-    await _dio.request<void>('/post/$idPost',
+    await _dio.request<void>('/api/post/$idPost',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'PUT',
@@ -372,7 +374,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/post/{id}',
+    await _dio.request<void>('/api/post/{id}',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'DELETE',

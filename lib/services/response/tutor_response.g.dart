@@ -15,10 +15,7 @@ TutorResponse _$TutorResponseFromJson(Map<String, dynamic> json) {
     ..qualification = json['qualification'] as String
     ..subjects = (json['subjects'] as List)?.map((e) => e as String)?.toList()
     ..address = json['address'] as String
-    ..grades = (json['grades'] as List)
-        ?.map(
-            (e) => e == null ? null : Grade.fromJson(e as Map<String, dynamic>))
-        ?.toList()
+    ..grades = (json['grades'] as List)?.map((e) => e as String)?.toList()
     ..rating = json['rating'] as String
     ..schedule = (json['schedule'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as bool),

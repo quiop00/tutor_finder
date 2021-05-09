@@ -7,30 +7,32 @@ import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/ui/screens/profile/profile_view_model.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_view.dart';
 
-class ProfileView extends StatefulWidget {
+import 'profile_tutor_view_model.dart';
+
+class ProfileTutorView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _ProfileView();
+    return _ProfileTutorView();
   }
 }
 
-class _ProfileView extends State<ProfileView> {
+class _ProfileTutorView extends State<ProfileTutorView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Danh mục học viên',
+            'Danh mục gia sư',
             style: TextStyle(color: Colors.white),
           ),
         ),
         backgroundColor: Color.fromARGB(255, 49, 243, 208),
       ),
       body: SingleChildScrollView(
-        child: ViewModelBuilder<ProfileViewModel>.reactive(
-          viewModelBuilder: () => ProfileViewModel(),
+        child: ViewModelBuilder<ProfileTutorViewModel>.reactive(
+          viewModelBuilder: () => ProfileTutorViewModel(),
           builder: (context, model, child) => Container(
               child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -144,7 +146,7 @@ class _ProfileView extends State<ProfileView> {
                                       width: 8,
                                     ),
                                     Text(
-                                      'Quản lý yêu cầu',
+                                      'Quản lý đề nghị dạy',
                                       style: TextStyle(fontSize: 20),
                                     ),
                                   ],
@@ -173,7 +175,7 @@ class _ProfileView extends State<ProfileView> {
                                     SizedBox(
                                       width: 8,
                                     ),
-                                    Text('Giáo viên đã lưu',
+                                    Text('Lớp học đã lưu',
                                         style: TextStyle(fontSize: 20)),
                                   ],
                                 ),
@@ -190,7 +192,15 @@ class _ProfileView extends State<ProfileView> {
                               height: 5,
                             ),
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Tutor tutor = Tutor();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => UpdateInfoView(
+                                              tutor: tutor,
+                                            )));
+                              },
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

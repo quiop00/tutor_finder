@@ -11,9 +11,14 @@ class HomeViewLearnerModel extends BaseViewModel {
   VoidCallback onSuccess;
   VoidCallback onLoading;
   Function(String) onError;
-  //HomePageViewModel(){} ;
   void getTutors(
       {VoidCallback onLoading,
       Function(String) onError,
-      VoidCallback onSuccess}) {}
+      VoidCallback onSuccess}) async {
+    await _api.client.getTutors().then((value) {
+      tutorsResponse = value;
+      this.onSuccess = onSuccess;
+      notifyListeners();
+    });
+  }
 }

@@ -1,33 +1,26 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tutor_finder_app/models/comments_model.dart';
 import 'package:tutor_finder_app/models/grade_model.dart';
+import 'package:tutor_finder_app/models/learner_model.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
-import 'package:tutor_finder_app/models/subject_model.dart';
-import 'package:tutor_finder_app/settings.dart' as settings;
-part 'tutor_response.g.dart';
+part 'post_response.g.dart';
 
 @JsonSerializable()
-class TutorResponse {
-  int id;
-  String name;
-  String phoneNumber;
-  String avatar;
-  String qualification;
+class PostResponse {
+  @JsonKey(name: 'id')
+  int postId;
+  int idStudent;
+  String grade;
+  String title;
   List<String> subjects;
+  String price;
+  String phoneNumber;
   String address;
-  List<String> grades;
-  String rating;
-  Map<String, bool> schedule;
-  List<CommentModel> comments;
   String description;
-  TutorResponse();
-  factory TutorResponse.fromJson(Map<String, dynamic> json) =>
-      _$TutorResponseFromJson(json);
-  Map<String, dynamic> toJson() => _$TutorResponseToJson(this);
-  getAvatar() {
-    return settings.BASE_API_URL + '/downloadFile/' + avatar ?? '';
-  }
-
+  Map<String, bool> schedule;
+  PostResponse();
+  factory PostResponse.fromJson(Map<String, dynamic> json) =>
+      _$PostResponseFromJson(json);
+  Map<String, dynamic> toJson() => _$PostResponseToJson(this);
   void covertScheduleToJson(List<Schedule> schedules) {
     schedule = {};
     schedule['sang_2'] = schedules[0].morning;

@@ -1,4 +1,4 @@
-String get BASE_API_URL => 'https://manage-tutor-123.herokuapp.com/api';
+String get BASE_API_URL => 'https://manage-tutor-123.herokuapp.com';
 List<String> subjects = [
   'Toán',
   'Vật lý',

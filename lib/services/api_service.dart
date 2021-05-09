@@ -17,51 +17,51 @@ import 'response/notification_response.dart';
 import 'response/posts_response.dart';
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "https://manage-tutor-123.herokuapp.com/api")
+@RestApi(baseUrl: "https://manage-tutor-123.herokuapp.com")
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
-  @POST('/auth/signin')
+  @POST('/api/auth/signin')
   Future<LoginResponse> checkLogin(@Body() LoginBody loginBody);
-  @POST('/auth/signup')
+  @POST('/api/auth/signup')
   Future<RegisterResponse> register(@Body() RegisterBody registerBody);
-  @POST('/post')
+  @POST('/api/post')
   Future<AddPostResponse> post(@Body() PostBody postBody);
-  @GET('/post')
+  @GET('/api/post')
   Future<PostsResponse> getPosts();
   @GET('/tutor')
   Future<TutorsResponse> getTutors();
-  @GET('/tutor/profile')
+  @GET('/api/tutor/profile')
   Future<TutorResponse> getTutorProfile();
-  @PUT('/tutor')
+  @PUT('/api/tutor')
   Future<void> updateTutor(@Body() TutorBody tutorBody);
-  @GET('/user/profile')
+  @GET('/api/user/profile')
   Future<UserBody> getUserProfile();
-  @PUT('/user')
+  @PUT('/api/user')
   Future<void> updateUser(@Body() UserBody userBody);
-  @POST('/invitation/{id}')
+  @POST('/api/invitation/{id}')
   Future<void> invite(@Path() int id);
-  @PUT('/invitation/acceptance')
+  @PUT('/api/invitation/acceptance')
   Future<void> acceptInvitation(@Body() Map<String, dynamic> data);
-  @PUT('/invitation/denial')
+  @PUT('/api/invitation/denial')
   Future<void> denyInvitation(@Body() Map<String, dynamic> data);
-  @POST('/comment')
+  @POST('/api/comment')
   Future<void> comment(@Body() Map<String, dynamic> comment);
-  @GET('/user/{id}')
+  @GET('/api/user/{id}')
   Future<UserBody> getUserById(@Path() int id);
-  @GET('/tutor/{id}')
+  @GET('/api/tutor/{id}')
   Future<TutorResponse> getTutorById(@Path() int id);
-  @POST('/suggestion')
+  @POST('/api/suggestion')
   Future<void> addSuggestion(
       @Query('idStudent') int idStudent, @Query('idPost') int idPost);
-  @PUT('/suggestion/acceptance')
+  @PUT('/api/suggestion/acceptance')
   Future<void> acceptSuggestion(
       @Query('idPost') int idPost, @Query('idTutor') int idTutor);
-  @PUT('/suggestion/denial')
+  @PUT('/api/suggestion/denial')
   Future<void> denySuggestion(
       @Query('idPost') int idPost, @Query('idTutor') int idTutor);
-  @PUT('/post/{idPost}')
+  @PUT('/api/post/{idPost}')
   Future<void> updatePost(@Path() int idPost, @Body() PostBody postBody);
-  @DELETE('/post/{id}')
+  @DELETE('/api/post/{id}')
   Future<void> deletePost(@Path() int idPost);
 }
 

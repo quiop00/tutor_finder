@@ -236,7 +236,7 @@ class _TutorDetail extends State<TutorsDetail> {
                                   width: 8,
                                 ),
                                 Text(
-                                  '${tutor.grades?.map((e) => e.nameGrade)?.join(", ")}',
+                                  '${tutor.grades?.map((e) => e)?.join(", ")}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 )

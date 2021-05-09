@@ -8,9 +8,9 @@ part of 'posts_response.dart';
 
 PostsResponse _$PostsResponseFromJson(Map<String, dynamic> json) {
   return PostsResponse()
-    ..posts = (json['posts'] as List)
-        ?.map(
-            (e) => e == null ? null : Post.fromJson(e as Map<String, dynamic>))
+    ..posts = (json['post'] as List)
+        ?.map((e) =>
+            e == null ? null : PostResponse.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 

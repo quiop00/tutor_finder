@@ -34,7 +34,7 @@ class _PostView extends State<PostView> {
                 backgroundColor: Color.fromARGB(255, 49, 243, 208),
               ),
               bottomNavigationBar: Container(
-                padding: EdgeInsets.symmetric(horizontal: 15),
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 40),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -62,7 +62,7 @@ class _PostView extends State<PostView> {
                           await model.post();
                           dialog.showAlertDialog(
                               context, 'Thông báo', model.message);
-                          if(model.message=="OK")
+                          if (model.message == "OK")
                             Navigator.pushNamed(context, '/home');
                         },
                         child: Text('Đăng yêu cầu'))
