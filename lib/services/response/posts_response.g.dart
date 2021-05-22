@@ -16,5 +16,5 @@ PostsResponse _$PostsResponseFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$PostsResponseToJson(PostsResponse instance) =>
     <String, dynamic>{
-      'posts': instance.posts,
+      'post': instance.posts,
     };

@@ -5,7 +5,9 @@ import 'package:tutor_finder_app/services/body/login_body.dart';
 import 'package:tutor_finder_app/services/body/register_body.dart';
 import 'package:tutor_finder_app/services/body/tutor_body.dart';
 import 'package:tutor_finder_app/services/response/add_post_response.dart';
+import 'package:tutor_finder_app/services/response/invitations_response.dart';
 import 'package:tutor_finder_app/services/response/register_response.dart';
+import 'package:tutor_finder_app/services/response/suggestion_response.dart';
 import 'package:tutor_finder_app/services/response/tutor_response.dart';
 import 'package:tutor_finder_app/services/response/tutors_response.dart';
 import 'package:tutor_finder_app/settings.dart' as settings;
@@ -13,8 +15,8 @@ import 'body/post_body.dart';
 import 'body/user_body.dart';
 import 'local_storage_service.dart';
 import 'response/login_response.dart';
-import 'response/notification_response.dart';
 import 'response/posts_response.dart';
+import 'response/suggestions_response.dart';
 part 'api_service.g.dart';
 
 @RestApi(baseUrl: "https://manage-tutor-123.herokuapp.com")
@@ -26,19 +28,19 @@ abstract class ApiClient {
   Future<RegisterResponse> register(@Body() RegisterBody registerBody);
   @POST('/api/post')
   Future<AddPostResponse> post(@Body() PostBody postBody);
-  @GET('/api/post')
+  @GET('/post')
   Future<PostsResponse> getPosts();
   @GET('/tutor')
   Future<TutorsResponse> getTutors();
   @GET('/api/tutor/profile')
-  Future<TutorResponse> getTutorProfile();
+  Future<Tutor> getTutorProfile();
   @PUT('/api/tutor')
-  Future<void> updateTutor(@Body() TutorBody tutorBody);
-  @GET('/api/user/profile')
-  Future<UserBody> getUserProfile();
+  Future<void> updateTutor(@Body() Tutor tutor);
+  @GET('/api/student/profile')
+  Future<UserBody> getStudentProfile();
   @PUT('/api/user')
-  Future<void> updateUser(@Body() UserBody userBody);
-  @POST('/api/invitation/{id}')
+  Future<void> updateStudent(@Body() UserBody userBody);
+  @POST('/api/invitation?idTutor={id}')
   Future<void> invite(@Path() int id);
   @PUT('/api/invitation/acceptance')
   Future<void> acceptInvitation(@Body() Map<String, dynamic> data);
@@ -63,6 +65,12 @@ abstract class ApiClient {
   Future<void> updatePost(@Path() int idPost, @Body() PostBody postBody);
   @DELETE('/api/post/{id}')
   Future<void> deletePost(@Path() int idPost);
+  @GET('/api/post')
+  Future<PostsResponse> getPostsByStudent();
+  @GET('/api/suggestion')
+  Future<SuggestionsResponse> getSuggestion();
+  @GET('/api/invitation')
+  Future<InvitationsResponse> getInvitation();
 }
 
 class Api {

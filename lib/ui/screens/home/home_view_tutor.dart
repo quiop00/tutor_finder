@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/post_model.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
+import 'package:tutor_finder_app/services/api_service.dart';
+import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/post_response.dart';
 import 'package:tutor_finder_app/services/response/posts_response.dart';
 import 'package:tutor_finder_app/services/response/tutor_response.dart';
@@ -124,48 +126,37 @@ class _HomeViewTutor extends State<HomeViewTutor> {
 // ignore: must_be_immutable
 class PostList extends StatelessWidget {
   List<PostResponse> posts;
+  final api = locator<Api>();
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      child: ViewModelBuilder<HomeViewTutorModel>.reactive(
-        builder: (context, model, child) => _listTutors,
-        viewModelBuilder: () => HomeViewTutorModel(),
-        onModelReady: (model) => model.getTutors(
-          onSuccess: () {
-            posts = model.postsResponse.posts;
-            print(model.postsResponse.toJson());
-          },
-        ),
-      ),
-    );
-  }
 
-  Widget get _listTutors =>
-      Consumer<HomeViewTutorModel>(builder: (context, model, child) {
-        // if (model.postsResponse != null) {
-        //   posts = model.postsResponse.posts.toList();
-        // } else {
-        //   return Center(
-        //     child: Text('No data'),
-        //   );
-        // }
-        // return ListView.builder(
-        //   itemBuilder: (context, index) {
-        //     return GestureDetector();
-        //   },
-        //   itemCount: posts.length,
-        // );
-        return ListView(
-          children: [
-            InkWell(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PostDetail()));
-                },
-                child: PostElement()),
-            PostElement(),
-          ],
-        );
-      });
+    return FutureBuilder(
+        future: api.client.getPosts(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            posts = snapshot.data.posts;
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  child: PostElement(
+                    post: posts[index],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostDetail(
+                                  post: posts[index],
+                                )));
+                  },
+                );
+              },
+              itemCount: posts.length,
+            );
+          } else
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+        });
+  }
 }

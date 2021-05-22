@@ -1,16 +1,19 @@
 String get BASE_API_URL => 'https://manage-tutor-123.herokuapp.com';
 List<String> subjects = [
   'Toán',
-  'Vật lý',
-  'Tiếng anh',
-  'Hóa học',
-  'Ngữ văn',
-  'Tiếng việt',
-  'Sinh học'
+  'Lý',
+  'Tiếng Anh',
+  'Hóa',
+  'Ngữ Văn',
+  'Tiếng Việt',
+  'Lịch Sử'
 ];
 List<String> grades = [
-  'Mầm non',
-  'Tiểu học',
+  'Lớp 1',
+  'Lớp 2',
+  'Lớp 3',
+  'Lớp 4',
+  'Lớp 5',
   'Lớp 6',
   'Lớp 7',
   'Lớp 8',
@@ -18,5 +21,4 @@ List<String> grades = [
   'Lớp 10',
   'Lớp 11',
   'Lớp 12',
-  'Khác'
 ];

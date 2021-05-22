@@ -27,7 +27,7 @@ class PostElement extends StatelessWidget {
                         children: [
                           Expanded(
                               child: Text(
-                            'Cần tìm gia sư luyện thi chứng chỉ',
+                            post.title ?? 'Cần tìm gia sư luyện thi chứng chỉ',
                             style: TextStyle(fontSize: 15),
                           )),
                           Icon(Icons.favorite_border)
@@ -45,7 +45,7 @@ class PostElement extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            'Lớp 7',
+                            post.grade ?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )
@@ -63,7 +63,7 @@ class PostElement extends StatelessWidget {
                             width: 5,
                           ),
                           Text(
-                            'Toán',
+                            post.subjects?.map((e) => e)?.join(','),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )
@@ -82,7 +82,7 @@ class PostElement extends StatelessWidget {
                           ),
                           Flexible(
                             child: Text(
-                              'Đà Nẵng',
+                              post.address ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -106,7 +106,7 @@ class PostElement extends StatelessWidget {
                               SizedBox(
                                 width: 5,
                               ),
-                              Text('90.0000 đ/h'),
+                              Text('${post.price ?? '0'} đ/h'),
                             ],
                           )),
                           Container(

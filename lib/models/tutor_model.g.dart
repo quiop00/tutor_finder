@@ -14,15 +14,15 @@ Tutor _$TutorFromJson(Map<String, dynamic> json) {
     ..email = json['email'] as String
     ..phoneNumber = json['phoneNumber'] as String
     ..age = json['age'] as int
-    ..gender = json['gender'] as bool
+    ..gender = json['gender'] as int
     ..name = json['name'] as String
     ..avatar = json['avatar'] as String
     ..qualification = json['qualification'] as String
-    ..subjects = (json['subjects'] as List)?.map((e) => e as String)?.toList()
+    ..subject = (json['subject'] as List)?.map((e) => e as String)?.toList()
     ..address = json['address'] as String
-    ..grades = (json['grades'] as List)?.map((e) => e as String)?.toList()
+    ..grade = (json['grade'] as List)?.map((e) => e as String)?.toList()
     ..rating = json['rating'] as String
-    ..schedule = (json['schedule'] as Map<String, dynamic>)?.map(
+    ..schedules = (json['schedules'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as bool),
     )
     ..comments = (json['comments'] as List)
@@ -43,11 +43,11 @@ Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
       'name': instance.name,
       'avatar': instance.avatar,
       'qualification': instance.qualification,
-      'subjects': instance.subjects,
+      'subject': instance.subject,
       'address': instance.address,
-      'grades': instance.grades,
+      'grade': instance.grade,
       'rating': instance.rating,
-      'schedule': instance.schedule,
+      'schedules': instance.schedules,
       'comments': instance.comments,
       'description': instance.description,
     };

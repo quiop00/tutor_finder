@@ -12,7 +12,7 @@ class UserBody {
   String phoneNumber;
   int age;
   String name;
-  bool gender;
+  int gender;
   UserBody();
   factory UserBody.fromJson(Map<String, dynamic> json) =>
       _$UserBodyFromJson(json);

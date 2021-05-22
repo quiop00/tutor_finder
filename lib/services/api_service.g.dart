@@ -78,7 +78,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    final _result = await _dio.request<Map<String, dynamic>>('/api/post',
+    final _result = await _dio.request<Map<String, dynamic>>('/post',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -108,7 +108,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<TutorResponse> getTutorProfile() async {
+  Future<Tutor> getTutorProfile() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
@@ -121,17 +121,17 @@ class _ApiClient implements ApiClient {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = TutorResponse.fromJson(_result.data);
+    final value = Tutor.fromJson(_result.data);
     return value;
   }
 
   @override
-  Future<void> updateTutor(tutorBody) async {
-    ArgumentError.checkNotNull(tutorBody, 'tutorBody');
+  Future<void> updateTutor(tutor) async {
+    ArgumentError.checkNotNull(tutor, 'tutor');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(tutorBody?.toJson() ?? <String, dynamic>{});
+    _data.addAll(tutor?.toJson() ?? <String, dynamic>{});
     await _dio.request<void>('/api/tutor',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -144,12 +144,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<UserBody> getUserProfile() async {
+  Future<UserBody> getStudentProfile() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.request<Map<String, dynamic>>(
-        '/api/user/profile',
+        '/api/student/profile',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'GET',
@@ -162,7 +162,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> updateUser(userBody) async {
+  Future<void> updateStudent(userBody) async {
     ArgumentError.checkNotNull(userBody, 'userBody');
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -185,7 +185,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/api/invitation/$id',
+    await _dio.request<void>('/api/invitation?idTutor=$id',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'POST',
@@ -383,5 +383,56 @@ class _ApiClient implements ApiClient {
             baseUrl: baseUrl),
         data: _data);
     return null;
+  }
+
+  @override
+  Future<PostsResponse> getPostsByStudent() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/api/post',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = PostsResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<SuggestionsResponse> getSuggestion() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/api/suggestion',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = SuggestionsResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<InvitationsResponse> getInvitation() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/api/invitation',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = InvitationsResponse.fromJson(_result.data);
+    return value;
   }
 }

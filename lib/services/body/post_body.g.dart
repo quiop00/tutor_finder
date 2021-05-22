@@ -9,12 +9,13 @@ part of 'post_body.dart';
 PostBody _$PostBodyFromJson(Map<String, dynamic> json) {
   return PostBody()
     ..title = json['title'] as String
-    ..subject = json['subject'] as String
-    ..topic = json['topic'] as String
+    ..subject = (json['subject'] as List)?.map((e) => e as String)?.toList()
+    ..grade = json['grade'] as String
     ..price = json['price'] as String
     ..address = json['address'] as String
+    ..phoneNumber = json['phonenumber'] as String
     ..description = json['description'] as String
-    ..schedule = (json['schedule'] as Map<String, dynamic>)?.map(
+    ..schedule = (json['schedules'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as bool),
     );
 }
@@ -22,9 +23,10 @@ PostBody _$PostBodyFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$PostBodyToJson(PostBody instance) => <String, dynamic>{
       'title': instance.title,
       'subject': instance.subject,
-      'topic': instance.topic,
+      'grade': instance.grade,
       'price': instance.price,
       'address': instance.address,
+      'phonenumber': instance.phoneNumber,
       'description': instance.description,
-      'schedule': instance.schedule,
+      'schedules': instance.schedule,
     };

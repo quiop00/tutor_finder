@@ -6,7 +6,7 @@ import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/tutors_response.dart';
 
 class HomeViewLearnerModel extends BaseViewModel {
-  final _api = locator<Api>();
+  final api = locator<Api>();
   TutorsResponse tutorsResponse;
   VoidCallback onSuccess;
   VoidCallback onLoading;
@@ -15,7 +15,7 @@ class HomeViewLearnerModel extends BaseViewModel {
       {VoidCallback onLoading,
       Function(String) onError,
       VoidCallback onSuccess}) async {
-    await _api.client.getTutors().then((value) {
+    await api.client.getTutors().then((value) {
       tutorsResponse = value;
       this.onSuccess = onSuccess;
       notifyListeners();

@@ -8,5 +8,5 @@ abstract class User {
   String phoneNumber;
   int age;
   String name;
-  bool gender;
+  int gender;
 }

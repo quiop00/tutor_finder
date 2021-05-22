@@ -3,10 +3,11 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 showAlertDialog(BuildContext context, String title, String message) {
   // set up the button
+  BuildContext dialogContext;
   Widget okButton = TextButton(
     child: Text("OK"),
     onPressed: () {
-      Navigator.pop(context);
+      Navigator.pop(dialogContext);
     },
   );
   // set up the AlertDialog
@@ -21,16 +22,19 @@ showAlertDialog(BuildContext context, String title, String message) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      dialogContext = context;
       return alert;
     },
   );
 }
 
-onLoading(BuildContext context) async {
+onLoading(BuildContext context, String title) async {
+  BuildContext dialogContext;
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
+      dialogContext = context;
       return Dialog(
         child: Container(
           height: 80,
@@ -40,14 +44,14 @@ onLoading(BuildContext context) async {
               SpinKitCircle(
                 color: Colors.redAccent,
               ),
-              Text("Đang đăng bài vui lòng chờ"),
+              Text(title),
             ],
           ),
         ),
       );
     },
   );
-  await Future.delayed(new Duration(seconds: 3), () {
-    Navigator.pop(context); //pop dialog
+  await Future.delayed(Duration(seconds: 3), () {
+    Navigator.of(dialogContext).pop(); //pop dialog
   });
 }

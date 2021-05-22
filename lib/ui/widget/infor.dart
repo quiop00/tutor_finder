@@ -18,9 +18,9 @@ class InforTutor extends StatelessWidget {
             _info(Icons.person_outline, "Họ tên: " + tutor.name),
             _info(Icons.location_on, "Địa chỉ: " + tutor.address),
             _info(Icons.menu_book,
-                "Lớp: " + tutor.grades.map((e) => e).join(", ")),
+                "Lớp: " + tutor.grade.map((e) => e).join(", ")),
             _info(Icons.menu_book,
-                "Môn học: " + tutor.subjects.map((e) => e).join(", ")),
+                "Môn học: " + tutor.subject.map((e) => e).join(", ")),
             _info(Icons.description, tutor.description),
             SizedBox(
               height: 50,

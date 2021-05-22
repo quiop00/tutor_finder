@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
+import 'package:tutor_finder_app/services/api_service.dart';
+import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/tutor_response.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_details_view.dart';
 import 'package:tutor_finder_app/ui/screens/home/home_view_model_learner.dart';
@@ -115,21 +117,50 @@ class _HomeViewLearner extends State<HomeViewLearner> {
 // ignore: must_be_immutable
 class TutorList extends StatelessWidget {
   List<TutorResponse> tutors;
+  final api = locator<Api>();
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
-      child: ViewModelBuilder<HomeViewLearnerModel>.reactive(
-        builder: (context, model, child) => _listTutors,
-        viewModelBuilder: () => HomeViewLearnerModel(),
-        onModelReady: (model) => model.getTutors(
-          onSuccess: () {
-            tutors = model.tutorsResponse.tutors;
-            print(model.tutorsResponse.toJson());
-          },
-        ),
-      ),
-    );
+    // return Container(
+    //   child: ViewModelBuilder<HomeViewLearnerModel>.reactive(
+    //     builder: (context, model, child) => _listTutors,
+    //     viewModelBuilder: () => HomeViewLearnerModel(),
+    //     onModelReady: (model) => model.getTutors(
+    //       onSuccess: () {
+    //         tutors = model.tutorsResponse.tutors;
+    //         print(model.tutorsResponse.toJson());
+    //       },
+    //     ),
+    //   ),
+    // );
+
+    return FutureBuilder(
+        future: api.client.getTutors(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            tutors = snapshot.data.tutors;
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  child: TutorElement(
+                    tutor: tutors[index],
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TutorsDetail(tutor: tutors[index])));
+                  },
+                );
+              },
+              itemCount: tutors.length,
+            );
+          } else
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+        });
   }
 
   Widget get _listTutors =>

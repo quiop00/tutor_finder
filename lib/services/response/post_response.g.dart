@@ -12,12 +12,12 @@ PostResponse _$PostResponseFromJson(Map<String, dynamic> json) {
     ..idStudent = json['idStudent'] as int
     ..grade = json['grade'] as String
     ..title = json['title'] as String
-    ..subjects = (json['subjects'] as List)?.map((e) => e as String)?.toList()
+    ..subjects = (json['subject'] as List)?.map((e) => e as String)?.toList()
     ..price = json['price'] as String
-    ..phoneNumber = json['phoneNumber'] as String
+    ..phoneNumber = json['phonenumber'] as String
     ..address = json['address'] as String
     ..description = json['description'] as String
-    ..schedule = (json['schedule'] as Map<String, dynamic>)?.map(
+    ..schedules = (json['schedules'] as Map<String, dynamic>)?.map(
       (k, e) => MapEntry(k, e as bool),
     );
 }
@@ -28,10 +28,10 @@ Map<String, dynamic> _$PostResponseToJson(PostResponse instance) =>
       'idStudent': instance.idStudent,
       'grade': instance.grade,
       'title': instance.title,
-      'subjects': instance.subjects,
+      'subject': instance.subjects,
       'price': instance.price,
-      'phoneNumber': instance.phoneNumber,
+      'phonenumber': instance.phoneNumber,
       'address': instance.address,
       'description': instance.description,
-      'schedule': instance.schedule,
+      'schedules': instance.schedules,
     };

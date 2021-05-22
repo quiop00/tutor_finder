@@ -15,7 +15,7 @@ UserBody _$UserBodyFromJson(Map<String, dynamic> json) {
     ..phoneNumber = json['phonenumber'] as String
     ..age = json['age'] as int
     ..name = json['name'] as String
-    ..gender = json['gender'] as bool;
+    ..gender = json['gender'] as int;
 }
 
 Map<String, dynamic> _$UserBodyToJson(UserBody instance) => <String, dynamic>{

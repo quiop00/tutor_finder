@@ -6,40 +6,36 @@ import 'package:tutor_finder_app/services/local_storage_service.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/login_response.dart';
 
-class LoginViewModel extends BaseViewModel{
-  final _api= locator<Api>();
+class LoginViewModel extends BaseViewModel {
+  final _api = locator<Api>();
 
   LoginResponse loginResponse;
   String errorMessage;
   bool status;
-  Future<void>checkLogin(LoginBody loginBody)async{
+  Future<void> checkLogin(LoginBody loginBody) async {
     setBusy(true);
-    await _api.client
-        .checkLogin(loginBody)
-        .then((value) {
-        loginResponse=value;
-        status=true;
-        print(loginResponse.toJson());
-
-    }).catchError((Object obj){
+    await _api.client.checkLogin(loginBody).then((value) {
+      loginResponse = value;
+      status = true;
+    }).catchError((Object obj) {
       switch (obj.runtimeType) {
         case DioError:
-        // Here's the sample to get the failed response error code and message
+          // Here's the sample to get the failed response error code and message
           final res = (obj as DioError).response;
-          print(res);
-          if(res.data["error"]=="Unauthorized"){
-            errorMessage="Tên đăng nhập hoặc mật khẩu không chính xác";
-          }
-          else errorMessage=res.data["error"];
+          if (res.data["error"] == "Unauthorized") {
+            errorMessage = "Tên đăng nhập hoặc mật khẩu không chính xác";
+          } else
+            errorMessage = res.data["error"];
           break;
       }
-      status=false;
-
+      status = false;
     });
-    if(status){
-      await  PreferenceUtils.setString('token', 'Bearer '+loginResponse.accessToken);
-    }
-    else await PreferenceUtils.setString('token', 'Bearer');
+    if (status) {
+      await PreferenceUtils.setString(
+          'token', 'Bearer ' + loginResponse.accessToken);
+      await PreferenceUtils.setString('roles', loginResponse.roles[0]);
+    } else
+      await PreferenceUtils.setString('token', 'Bearer');
     print(PreferenceUtils.getString('token'));
     setBusy(false);
     notifyListeners();

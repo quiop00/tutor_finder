@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
+import 'package:tutor_finder_app/ui/screens/management/post_management_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
+import 'package:tutor_finder_app/settings.dart' as setting;
 
 class PostView extends StatefulWidget {
   @override
@@ -17,16 +22,23 @@ class PostView extends StatefulWidget {
 class _PostView extends State<PostView> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   List<Schedule> schedules = [];
+  List<String> subjects = setting.subjects;
+  List<String> grades = setting.grades;
+  var _subjects;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     schedules = Schedule.initSchedules();
+    _subjects = subjects.map((e) => MultiSelectItem<String>(e, e)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<PostViewModel>.reactive(
+        onModelReady: (model) {
+          model.schedules = schedules;
+        },
         viewModelBuilder: () => PostViewModel(),
         builder: (context, model, child) => Scaffold(
               appBar: AppBar(
@@ -58,12 +70,16 @@ class _PostView extends State<PostView> {
                                 'Vui lòng chọn buổi học');
                             return;
                           }
-                          await dialog.onLoading(context);
+                          await dialog.onLoading(context, 'Đang đăng bài');
                           await model.post();
                           dialog.showAlertDialog(
                               context, 'Thông báo', model.message);
                           if (model.message == "OK")
-                            Navigator.pushNamed(context, '/home');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        PostManagementView()));
                         },
                         child: Text('Đăng yêu cầu'))
                   ],
@@ -158,7 +174,7 @@ class _PostView extends State<PostView> {
                             padding: EdgeInsets.symmetric(horizontal: 15),
                             child: Container(
                               padding: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height * 0.42,
+                              height: MediaQuery.of(context).size.height * 0.56,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(2),
@@ -173,26 +189,93 @@ class _PostView extends State<PostView> {
                                   ),
                                 ],
                               ),
-                              child: ListView(
+                              child: Column(
                                 children: [
-                                  _formField(Icons.book, 'Môn học',
-                                      validator: (input) {
-                                    if (input.length == 0) {
-                                      return '';
-                                    }
-                                    return null;
-                                  }, onSaved: (input) {
-                                    model.postBody.subject = input;
-                                  }),
-                                  _formField(Icons.note_add, 'Chủ đề',
-                                      validator: (input) {
-                                    if (input.length == 0) {
-                                      return '';
-                                    }
-                                    return null;
-                                  }, onSaved: (input) {
-                                    model.postBody.topic = input;
-                                  }),
+                                  Container(
+                                      padding: EdgeInsets.all(12),
+                                      alignment: Alignment.topLeft,
+                                      child: Text("Môn học")),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 15),
+                                    child: Container(
+                                      padding: EdgeInsets.all(10),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.2,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(2),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(
+                                                0.3), //color of shadow
+                                            spreadRadius: 2, //spread radius
+                                            blurRadius: 2, // blur radius
+                                            offset: Offset(0,
+                                                1), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          MultiSelectDialogField(
+                                            initialValue:
+                                                model.postBody.subject,
+                                            listType: MultiSelectListType.LIST,
+                                            searchable: true,
+                                            buttonText: Text("Chọn môn dạy"),
+                                            title: Text("Môn"),
+                                            items: _subjects,
+                                            onConfirm: (values) {
+                                              setState(() {
+                                                model.postBody.subject = values;
+                                              });
+                                            },
+                                          ),
+                                          model.postBody.subject == null ||
+                                                  model.postBody.subject.isEmpty
+                                              ? Container(
+                                                  padding: EdgeInsets.all(10),
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    "None selected",
+                                                    style: TextStyle(
+                                                        color: Colors.black54),
+                                                  ))
+                                              : Container(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                      child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.emoji_people,
+                                          color: Color.fromARGB(
+                                              255, 49, 243, 208)),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      DropdownButton<String>(
+                                        hint: Text("Lớp"),
+                                        value: model.postBody.grade,
+                                        items: grades.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            model.postBody.grade = val;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  )),
                                   _formField(Icons.monetization_on,
                                       'Học phí dự kiến (VND/buổi)',
                                       validator: (input) {
@@ -203,17 +286,17 @@ class _PostView extends State<PostView> {
                                   }, onSaved: (input) {
                                     model.postBody.price = input;
                                   }),
-                                  _formField(Icons.location_on, 'Tỉnh thành'),
-                                  // _formField(Icons.phone_android, 'Số điện thoại',
-                                  //     validator: (input) {
-                                  //   if (input.isEmpty) {
-                                  //     return 'Không được bỏ trống';
-                                  //   }
-                                  //   return null;
-                                  // }, onSaved: (input) {
-                                  //   model.postBody.p = input;
-                                  // }),
-                                  _formField(Icons.home, 'Địa chỉ cụ thể',
+                                  _formField(
+                                      Icons.phone_android, 'Số điện thoại',
+                                      validator: (input) {
+                                    if (input.isEmpty) {
+                                      return 'Không được bỏ trống';
+                                    }
+                                    return null;
+                                  }, onSaved: (input) {
+                                    model.postBody.phoneNumber = input;
+                                  }),
+                                  _formField(Icons.home, 'Địa chỉ',
                                       validator: (input) {
                                     if (input.isEmpty) {
                                       return '';

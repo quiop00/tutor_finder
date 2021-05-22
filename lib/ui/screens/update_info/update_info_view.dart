@@ -4,8 +4,11 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
+import 'package:tutor_finder_app/models/schedule_model.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
+import 'package:tutor_finder_app/services/response/tutor_response.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
+import 'package:tutor_finder_app/ui/screens/profile/profile_tutor_view.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_view_model.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
 import 'package:tutor_finder_app/settings.dart' as setting;
@@ -26,6 +29,9 @@ class _UpdateInfoView extends State<UpdateInfoView> {
   List<String> grades = setting.grades;
   var _grades;
   var _subjects;
+  List<Schedule> schedules = [];
+  //List<String> subject;
+  //List<String> grade;
   _UpdateInfoView({this.tutor});
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
@@ -34,6 +40,12 @@ class _UpdateInfoView extends State<UpdateInfoView> {
     super.initState();
     _grades = grades.map((e) => MultiSelectItem<String>(e, e)).toList();
     _subjects = subjects.map((e) => MultiSelectItem<String>(e, e)).toList();
+    // subject = tutor.subject ?? [];
+    // grade = tutor.grade ?? [];
+    if (tutor.schedules != null) {
+      schedules = Schedule.schedulesFromJson(tutor.schedules);
+    } else
+      schedules = Schedule.initSchedules();
   }
 
   @override
@@ -42,6 +54,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
         viewModelBuilder: () => UpdateInfoViewModel(),
         builder: (context, model, child) {
           model.tutor = tutor;
+          model.schedules = schedules;
           return Scaffold(
             appBar: AppBar(
               title: Text('Thông tin cá nhân'),
@@ -59,25 +72,15 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                           return;
                         }
                         _formKey.currentState.save();
-                        var count = 0;
-                        for (var schedule in model.schedules) {
-                          if (schedule.morning ||
-                              schedule.afternoon ||
-                              schedule.night) {
-                            count++;
-                          }
-                        }
-                        if (count == 0) {
-                          dialog.showAlertDialog(context, 'Lỗi đăng bài',
-                              'Vui lòng chọn buổi học');
-                          return;
-                        }
-                        await dialog.onLoading(context);
+                        //await dialog.onLoading(context);
                         await model.update();
-                        dialog.showAlertDialog(
-                            context, 'Thông báo', model.message);
+                        // dialog.showAlertDialog(
+                        //     context, 'Thông báo', model.message);
                         if (model.message == "OK")
-                          Navigator.pushNamed(context, '/home');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileTutorView()));
                       },
                       child: Text('Cập nhật'))
                 ],
@@ -117,7 +120,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                  'https://manage-tutor-123.herokuapp.com/api/downloadFile/avatar_default.png'),
+                                                  tutor.avatar ?? ''),
                                               fit: BoxFit.cover),
                                           border: new Border.all(
                                             color: Colors.white,
@@ -158,7 +161,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                             ),
                             child: ListView(
                               children: [
-                                _formField(Icons.book, 'Họ và tên',
+                                _formField(tutor.name, Icons.book, 'Họ và tên',
                                     validator: (input) {
                                   if (input.length == 0) {
                                     return '';
@@ -167,17 +170,36 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                                 }, onSaved: (input) {
                                   model.tutor.name = input;
                                 }),
-                                _formField(Icons.book, 'Giới tính',
-                                    validator: (input) {
-                                  if (input.length == 0) {
-                                    return '';
-                                  }
-                                  return null;
-                                }, onSaved: (input) {
-                                  model.tutor.address = input;
-                                }),
-                                _formField(Icons.note_add, 'Số điện thoại',
-                                    validator: (input) {
+                                Container(
+                                    child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Icon(Icons.emoji_people,
+                                        color:
+                                            Color.fromARGB(255, 49, 243, 208)),
+                                    SizedBox(
+                                      width: 15,
+                                    ),
+                                    DropdownButton<int>(
+                                      hint: Text("Giới tính"),
+                                      value: model.tutor.gender,
+                                      items: <int>[0, 1].map((value) {
+                                        return DropdownMenuItem<int>(
+                                          value: value,
+                                          child:
+                                              Text(value == 0 ? 'Nữ' : 'Nam'),
+                                        );
+                                      }).toList(),
+                                      onChanged: (val) {
+                                        setState(() {
+                                          model.tutor.gender = val;
+                                        });
+                                      },
+                                    ),
+                                  ],
+                                )),
+                                _formField(tutor.phoneNumber, Icons.note_add,
+                                    'Số điện thoại', validator: (input) {
                                   if (input.length == 0) {
                                     return '';
                                   }
@@ -186,8 +208,9 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                                   model.tutor.phoneNumber = input;
                                 }),
                                 _formField(
-                                    Icons.monetization_on, 'Học vấn / Trình độ',
-                                    validator: (input) {
+                                    tutor.qualification,
+                                    Icons.monetization_on,
+                                    'Học vấn / Trình độ', validator: (input) {
                                   if (input.length == 0) {
                                     return '';
                                   }
@@ -195,7 +218,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                                 }, onSaved: (input) {
                                   model.tutor.qualification = input;
                                 }),
-                                _formField(Icons.home, 'Địa chỉ',
+                                _formField(tutor.address, Icons.home, 'Địa chỉ',
                                     validator: (input) {
                                   if (input.isEmpty) {
                                     return '';
@@ -234,30 +257,18 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                             child: Column(
                               children: <Widget>[
                                 MultiSelectDialogField(
-                                  listType: MultiSelectListType.LIST,
-                                  searchable: true,
-                                  buttonText: Text("Chọn lớp học"),
-                                  title: Text("Lớp"),
-                                  items: _grades,
-                                  onConfirm: (values) {
-                                    setState(() {
-                                      model.tutor.grades = values;
-                                    });
-                                  },
-                                  chipDisplay: MultiSelectChipDisplay(
-                                    items: model.tutor.grades
-                                        ?.map((e) =>
-                                            MultiSelectItem<String>(e, e))
-                                        ?.toList(),
-                                    onTap: (value) {
+                                    initialValue: model.tutor.grade,
+                                    listType: MultiSelectListType.LIST,
+                                    searchable: true,
+                                    title: Text("Lớp"),
+                                    items: _grades,
+                                    onConfirm: (values) {
                                       setState(() {
-                                        model.tutor.grades.remove(value);
+                                        model.tutor.grade = values;
                                       });
-                                    },
-                                  ),
-                                ),
-                                model.tutor.grades == null ||
-                                        model.tutor.grades.isEmpty
+                                    }),
+                                model.tutor.grade == null ||
+                                        model.tutor.grade.isEmpty
                                     ? Container(
                                         padding: EdgeInsets.all(10),
                                         alignment: Alignment.centerLeft,
@@ -297,6 +308,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                             child: Column(
                               children: <Widget>[
                                 MultiSelectDialogField(
+                                  initialValue: model.tutor.subject,
                                   listType: MultiSelectListType.LIST,
                                   searchable: true,
                                   buttonText: Text("Chọn môn dạy"),
@@ -304,23 +316,12 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                                   items: _subjects,
                                   onConfirm: (values) {
                                     setState(() {
-                                      model.tutor.subjects = values;
+                                      model.tutor.subject = values;
                                     });
                                   },
-                                  chipDisplay: MultiSelectChipDisplay(
-                                    items: model.tutor.subjects
-                                        ?.map((e) =>
-                                            MultiSelectItem<String>(e, e))
-                                        ?.toList(),
-                                    onTap: (value) {
-                                      setState(() {
-                                        model.tutor.subjects.remove(value);
-                                      });
-                                    },
-                                  ),
                                 ),
-                                model.tutor.subjects == null ||
-                                        model.tutor.subjects.isEmpty
+                                model.tutor.subject == null ||
+                                        model.tutor.subject.isEmpty
                                     ? Container(
                                         padding: EdgeInsets.all(10),
                                         alignment: Alignment.centerLeft,
@@ -358,6 +359,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                               ],
                             ),
                             child: TextFormField(
+                              initialValue: model.tutor.description,
                               validator: (input) {
                                 if (input.length == 0) {
                                   return '';
@@ -415,7 +417,8 @@ class _UpdateInfoView extends State<UpdateInfoView> {
         });
   }
 
-  Widget _formField(IconData iconData, String hintText, {validator, onSaved}) {
+  Widget _formField(initValue, IconData iconData, String hintText,
+      {validator, onSaved}) {
     return Consumer<UpdateInfoViewModel>(
       builder: (context, model, child) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -431,6 +434,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
           Expanded(
               child: Container(
             child: TextFormField(
+              initialValue: initValue,
               validator: validator,
               onSaved: onSaved,
               decoration: InputDecoration(

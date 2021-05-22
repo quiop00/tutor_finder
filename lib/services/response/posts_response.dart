@@ -5,6 +5,7 @@ part 'posts_response.g.dart';
 
 @JsonSerializable()
 class PostsResponse {
+  @JsonKey(name: 'post')
   List<PostResponse> posts;
   PostsResponse();
   factory PostsResponse.fromJson(Map<String, dynamic> json) =>

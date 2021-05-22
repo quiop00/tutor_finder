@@ -14,7 +14,7 @@ Learner _$LearnerFromJson(Map<String, dynamic> json) {
     ..email = json['email'] as String
     ..age = json['age'] as int
     ..name = json['name'] as String
-    ..gender = json['gender'] as bool
+    ..gender = json['gender'] as int
     ..phoneNumber = json['phoneNumber'] as String;
 }
 

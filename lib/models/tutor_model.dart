@@ -13,11 +13,11 @@ class Tutor extends User {
   String name;
   String avatar;
   String qualification;
-  List<String> subjects;
+  List<String> subject;
   String address;
-  List<String> grades;
+  List<String> grade;
   String rating;
-  Map<String, bool> schedule;
+  Map<String, bool> schedules;
   List<CommentModel> comments;
   String description;
   Tutor();

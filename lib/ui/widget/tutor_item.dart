@@ -34,8 +34,10 @@ class TutorElement extends StatelessWidget {
                       children: [
                         Expanded(
                             child: Text(
-                          "tutor.name",
+                          tutor.name ?? 'No name',
                           style: TextStyle(fontSize: 15),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         )),
                         Icon(Icons.favorite_border)
                       ],
@@ -51,7 +53,7 @@ class TutorElement extends StatelessWidget {
                       SizedBox(
                         width: 5,
                       ),
-                      Text(tutor.rating ?? '1')
+                      Text(tutor.rating ?? 'Chưa có đánh giá')
                     ],
                   ),
                   Container(
@@ -65,7 +67,7 @@ class TutorElement extends StatelessWidget {
                           width: 5,
                         ),
                         Text(
-                          '${tutor.subjects?.join(',')}',
+                          '${tutor.subject?.join(',')}',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         )
@@ -84,7 +86,7 @@ class TutorElement extends StatelessWidget {
                         ),
                         Flexible(
                           child: Text(
-                            tutor.address ?? 'A',
+                            tutor.address ?? '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -101,14 +103,14 @@ class TutorElement extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Icon(
-                              Icons.monetization_on,
+                              Icons.phone_android,
                               color: Colors.yellow,
                               size: 12,
                             ),
                             SizedBox(
                               width: 5,
                             ),
-                            Text('90.0000 đ/h'),
+                            Text(tutor.phoneNumber ?? ''),
                           ],
                         )),
                         Container(
