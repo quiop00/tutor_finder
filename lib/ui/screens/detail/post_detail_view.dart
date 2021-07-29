@@ -22,10 +22,12 @@ class _PostDetail extends State<PostDetail> {
   final PostResponse post;
   _PostDetail({this.post});
   List<Schedule> schedules = [];
+  var suggested;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    suggested = false;
     if (post.schedules != null) {
       schedules = Schedule.schedulesFromJson(post.schedules);
     } else
@@ -43,19 +45,22 @@ class _PostDetail extends State<PostDetail> {
                 backgroundColor: Color.fromARGB(255, 49, 243, 208),
               ),
               bottomNavigationBar: Container(
-                padding: EdgeInsets.only(left: 15, right: 15, bottom: 46),
+                padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text('Gửi lời đề nghị dạy'),
                     ElevatedButton(
-                        onPressed: () async {
-                          await dialog.onLoading(context, 'Đang xử lý');
-                          await model.suggest(post.idStudent, post.postId);
-                          dialog.showAlertDialog(
-                              context, 'Hoàn tất', model.message);
-                        },
-                        child: Text('Đề nghị dạy'))
+                        onPressed: suggested
+                            ? null
+                            : () async {
+                                await dialog.onLoading(context, 'Đang xử lý');
+                                await model.suggest(
+                                    post.idStudent, post.postId);
+                                dialog.showAlertDialog(
+                                    context, 'Hoàn tất', model.message);
+                              },
+                        child: Text(suggested ? 'Chờ phản hồi' : 'Đề nghị dạy'))
                   ],
                 ),
               ),

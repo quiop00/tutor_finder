@@ -12,6 +12,9 @@ class SuggestionResponse {
   int idTutor;
   int idPost;
   int status;
+  String nameTutor;
+  String avatar;
+  String titlePost;
   SuggestionResponse();
   factory SuggestionResponse.fromJson(Map<String, dynamic> json) =>
       _$SuggestionResponseFromJson(json);

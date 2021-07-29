@@ -22,3 +22,11 @@ List<String> grades = [
   'Lớp 11',
   'Lớp 12',
 ];
+List<String> locations = [
+  'Liên Chiểu',
+  'Thanh Khê',
+  'Hải Châu',
+  'Ngũ Hành Sơn',
+  'Cẩm Lệ',
+  'Sơn Trà'
+];

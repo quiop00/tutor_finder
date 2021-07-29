@@ -12,7 +12,7 @@ Tutor _$TutorFromJson(Map<String, dynamic> json) {
     ..userName = json['userName'] as String
     ..password = json['password'] as String
     ..email = json['email'] as String
-    ..phoneNumber = json['phoneNumber'] as String
+    ..phoneNumber = json['phonenumber'] as String
     ..age = json['age'] as int
     ..gender = json['gender'] as int
     ..name = json['name'] as String
@@ -37,7 +37,7 @@ Map<String, dynamic> _$TutorToJson(Tutor instance) => <String, dynamic>{
       'userName': instance.userName,
       'password': instance.password,
       'email': instance.email,
-      'phoneNumber': instance.phoneNumber,
+      'phonenumber': instance.phoneNumber,
       'age': instance.age,
       'gender': instance.gender,
       'name': instance.name,

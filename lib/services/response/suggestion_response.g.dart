@@ -12,7 +12,10 @@ SuggestionResponse _$SuggestionResponseFromJson(Map<String, dynamic> json) {
     ..idStudent = json['idStudent'] as int
     ..idTutor = json['idTutor'] as int
     ..idPost = json['idPost'] as int
-    ..status = json['status'] as int;
+    ..status = json['status'] as int
+    ..nameTutor = json['nameTutor'] as String
+    ..avatar = json['avatar'] as String
+    ..titlePost = json['titlePost'] as String;
 }
 
 Map<String, dynamic> _$SuggestionResponseToJson(SuggestionResponse instance) =>
@@ -22,4 +25,7 @@ Map<String, dynamic> _$SuggestionResponseToJson(SuggestionResponse instance) =>
       'idTutor': instance.idTutor,
       'idPost': instance.idPost,
       'status': instance.status,
+      'nameTutor': instance.nameTutor,
+      'avatar': instance.avatar,
+      'titlePost': instance.titlePost,
     };

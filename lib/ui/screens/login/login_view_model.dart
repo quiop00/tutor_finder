@@ -12,6 +12,7 @@ class LoginViewModel extends BaseViewModel {
   LoginResponse loginResponse;
   String errorMessage;
   bool status;
+  bool isVisible = true;
   Future<void> checkLogin(LoginBody loginBody) async {
     setBusy(true);
     await _api.client.checkLogin(loginBody).then((value) {

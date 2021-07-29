@@ -8,6 +8,7 @@ part 'invitation_response.g.dart';
 class InvitationResponse {
   int id;
   int idStudent;
+  String nameStudent;
   int idTutor;
   int status;
   InvitationResponse();

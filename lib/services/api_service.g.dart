@@ -197,12 +197,11 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> acceptInvitation(data) async {
-    ArgumentError.checkNotNull(data, 'data');
+  Future<void> acceptInvitation(id) async {
+    ArgumentError.checkNotNull(id, 'id');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'idStudent': id};
     final _data = <String, dynamic>{};
-    _data.addAll(data ?? <String, dynamic>{});
     await _dio.request<void>('/api/invitation/acceptance',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -215,12 +214,11 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<void> denyInvitation(data) async {
-    ArgumentError.checkNotNull(data, 'data');
+  Future<void> denyInvitation(id) async {
+    ArgumentError.checkNotNull(id, 'id');
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'idStudent': id};
     final _data = <String, dynamic>{};
-    _data.addAll(data ?? <String, dynamic>{});
     await _dio.request<void>('/api/invitation/denial',
         queryParameters: queryParameters,
         options: RequestOptions(
@@ -374,7 +372,7 @@ class _ApiClient implements ApiClient {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    await _dio.request<void>('/api/post/{id}',
+    await _dio.request<void>('/api/post/$idPost',
         queryParameters: queryParameters,
         options: RequestOptions(
             method: 'DELETE',
@@ -433,6 +431,44 @@ class _ApiClient implements ApiClient {
             baseUrl: baseUrl),
         data: _data);
     final value = InvitationsResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<void> uploadAvatar(file) async {
+    ArgumentError.checkNotNull(file, 'file');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = FormData();
+    _data.files.add(MapEntry(
+        'file',
+        MultipartFile.fromFileSync(file.path,
+            filename: file.path.split(Platform.pathSeparator).last)));
+    await _dio.request<void>('/api/uploadImage',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'POST',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    return null;
+  }
+
+  @override
+  Future<TakenClass> getTakenClass() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/api/tutor/class',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = TakenClass.fromJson(_result.data);
     return value;
   }
 }

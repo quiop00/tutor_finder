@@ -20,7 +20,7 @@ class TutorElement extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                       image: NetworkImage(
-                          tutor.avatar == null ? '' : tutor.getAvatar()),
+                          tutor.avatar == null ? '' : tutor.avatar),
                       fit: BoxFit.cover)),
             ),
             Expanded(
@@ -38,8 +38,7 @@ class TutorElement extends StatelessWidget {
                           style: TextStyle(fontSize: 15),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                        )),
-                        Icon(Icons.favorite_border)
+                        ))
                       ],
                     ),
                   ),

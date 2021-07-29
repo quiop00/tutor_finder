@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:stacked/stacked.dart';
@@ -319,6 +321,12 @@ class _RegisterView extends State<RegisterView> {
                               await model.register();
                               dialog.showAlertDialog(
                                   context, 'Thông báo', model.message);
+                              if (model.status)
+                                Timer timer = Timer(
+                                    const Duration(milliseconds: 800), () {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/login');
+                                });
                             }
                           : null,
                     ),

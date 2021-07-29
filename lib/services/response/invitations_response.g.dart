@@ -11,7 +11,7 @@ InvitationsResponse _$InvitationsResponseFromJson(Map<String, dynamic> json) {
     ..invitations = (json['invitations'] as List)
         ?.map((e) => e == null
             ? null
-            : InvitationsResponse.fromJson(e as Map<String, dynamic>))
+            : InvitationResponse.fromJson(e as Map<String, dynamic>))
         ?.toList();
 }
 

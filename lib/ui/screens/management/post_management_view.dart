@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
@@ -23,6 +24,14 @@ class PostManagementView extends StatefulWidget {
 class _PostManagementView extends State<PostManagementView> {
   final _api = locator<Api>();
   PostsResponse posts = PostsResponse();
+  var onDelete;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    onDelete = [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,15 +69,15 @@ class _PostManagementView extends State<PostManagementView> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   posts = snapshot.data;
+                  onDelete = posts.posts.map((e) => false).toList();
                   return Expanded(
                     child: Container(
                       height: MediaQuery.of(context).size.height - 70,
                       padding:
                           EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                       child: ListView.builder(
-                        itemBuilder: (context, index) => PostElement(
-                          posts.posts[index],
-                        ),
+                        itemBuilder: (context, index) =>
+                            PostElement(posts.posts[index], index),
                         itemCount: posts.posts.length,
                       ),
                     ),
@@ -83,59 +92,23 @@ class _PostManagementView extends State<PostManagementView> {
     );
   }
 
-  //
-  // Widget get _postManagementView =>
-  //     Consumer<PostManagementVM>(builder: (context, model, child) {
-  //       return Container(
-  //         color: Colors.white,
-  //         height: MediaQuery.of(context).size.height - 50,
-  //         padding: EdgeInsets.symmetric(vertical: 15),
-  //         child: Column(children: [
-  //           Container(
-  //             height: 40,
-  //             width: MediaQuery.of(context).size.width * 0.6,
-  //             decoration: BoxDecoration(
-  //               color: Colors.white,
-  //             ),
-  //             child: Center(
-  //               child: ElevatedButton(
-  //                 onPressed: () {
-  //                   Navigator.push(context,
-  //                       MaterialPageRoute(builder: (context) => PostView()));
-  //                 },
-  //                 child: Text('Thêm bài'),
-  //               ),
-  //             ),
-  //           ),
-  //           SizedBox(
-  //             height: 5,
-  //           ),
-  //           model.posts.posts != null
-  //               ? Expanded(
-  //                   child: Container(
-  //                     height: MediaQuery.of(context).size.height - 70,
-  //                     padding:
-  //                         EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-  //                     child: ListView.builder(
-  //                       itemBuilder: (context, index) => PostElement(
-  //                         model.posts.posts[index],
-  //                       ),
-  //                       itemCount: model.posts.posts.length,
-  //                     ),
-  //                   ),
-  //                 )
-  //               : Center(
-  //                   child: Text('No data'),
-  //                 ),
-  //         ]),
-  //       );
-  //     });
-  Widget PostElement(PostResponse post) {
+  Widget PostElement(PostResponse post, index) {
     return Container(
       height: 100,
       child: Card(
         child: Row(
           children: [
+            Container(
+              width: 80,
+              height: 80,
+              margin: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          'https://image.flaticon.com/icons/png/512/1999/1999310.png'),
+                      fit: BoxFit.cover)),
+            ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,7 +141,15 @@ class _PostManagementView extends State<PostManagementView> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20)),
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PostEditView(
+                                            post: post,
+                                            isEdit: true,
+                                          )));
+                            },
                             child: Center(child: Text('Chỉnh sửa')),
                           ),
                         ),
@@ -179,8 +160,24 @@ class _PostManagementView extends State<PostManagementView> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20)),
                           child: ElevatedButton(
-                            onPressed: () {},
-                            child: Center(child: Text('Xóa')),
+                            onPressed: () async {
+                              setState(() {
+                                onDelete[index] = true;
+                              });
+                              print(post.postId);
+                              await _api.client
+                                  .deletePost(post.postId)
+                                  .catchError((onError) {
+                                final res = (onError as DioError).response;
+                                print(res);
+                              });
+                              setState(() {
+                                onDelete[index] = false;
+                              });
+                            },
+                            child: onDelete[index]
+                                ? Center(child: CircularProgressIndicator())
+                                : Center(child: Text('Xóa')),
                           ),
                         )
                       ],

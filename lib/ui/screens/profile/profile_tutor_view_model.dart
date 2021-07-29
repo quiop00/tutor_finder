@@ -15,5 +15,14 @@ class ProfileTutorViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  uploadImage() async {}
+  uploadImage(img) async {
+    setBusy(true);
+    await _api.client.uploadAvatar(img).then((value) {
+      print('OK');
+    }).catchError((onError) {
+      print('Loi');
+    });
+    setBusy(false);
+    notifyListeners();
+  }
 }

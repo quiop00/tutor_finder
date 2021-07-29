@@ -46,7 +46,7 @@ class _PostView extends State<PostView> {
                 backgroundColor: Color.fromARGB(255, 49, 243, 208),
               ),
               bottomNavigationBar: Container(
-                padding: EdgeInsets.only(left: 15, right: 15, bottom: 40),
+                padding: EdgeInsets.only(left: 15, right: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -74,12 +74,7 @@ class _PostView extends State<PostView> {
                           await model.post();
                           dialog.showAlertDialog(
                               context, 'Thông báo', model.message);
-                          if (model.message == "OK")
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        PostManagementView()));
+                          if (model.message == "OK") Navigator.pop(context);
                         },
                         child: Text('Đăng yêu cầu'))
                   ],

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
@@ -17,6 +19,7 @@ import 'local_storage_service.dart';
 import 'response/login_response.dart';
 import 'response/posts_response.dart';
 import 'response/suggestions_response.dart';
+import 'response/taken_class.dart';
 part 'api_service.g.dart';
 
 @RestApi(baseUrl: "https://manage-tutor-123.herokuapp.com")
@@ -43,9 +46,9 @@ abstract class ApiClient {
   @POST('/api/invitation?idTutor={id}')
   Future<void> invite(@Path() int id);
   @PUT('/api/invitation/acceptance')
-  Future<void> acceptInvitation(@Body() Map<String, dynamic> data);
+  Future<void> acceptInvitation(@Query('idStudent') int id);
   @PUT('/api/invitation/denial')
-  Future<void> denyInvitation(@Body() Map<String, dynamic> data);
+  Future<void> denyInvitation(@Query('idStudent') int id);
   @POST('/api/comment')
   Future<void> comment(@Body() Map<String, dynamic> comment);
   @GET('/api/user/{id}')
@@ -71,6 +74,10 @@ abstract class ApiClient {
   Future<SuggestionsResponse> getSuggestion();
   @GET('/api/invitation')
   Future<InvitationsResponse> getInvitation();
+  @POST('/api/uploadImage')
+  Future<void> uploadAvatar(@Part() File file);
+  @GET('/api/tutor/class')
+  Future<TakenClass> getTakenClass();
 }
 
 class Api {

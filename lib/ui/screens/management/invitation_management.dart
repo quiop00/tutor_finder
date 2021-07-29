@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:tutor_finder_app/services/api_service.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
-import 'package:tutor_finder_app/services/response/suggestion_response.dart';
-import 'package:tutor_finder_app/services/response/suggestions_response.dart';
+import 'package:tutor_finder_app/services/response/invitation_response.dart';
+import 'package:tutor_finder_app/services/response/invitations_response.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
 
-class RequestManagementView extends StatefulWidget {
+class InvitationManagementView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _RequestManagementView();
+    return _InvitationManagementView();
   }
 }
 
-class _RequestManagementView extends State<RequestManagementView> {
+class _InvitationManagementView extends State<InvitationManagementView> {
   final _api = locator<Api>();
-  SuggestionsResponse suggestions = SuggestionsResponse();
+  InvitationsResponse invitations = InvitationsResponse();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 49, 243, 208),
-        title: Text("Danh sách lời mời dạy"),
+        title: Text(""),
       ),
       body: SafeArea(
           child: Container(
@@ -28,24 +28,41 @@ class _RequestManagementView extends State<RequestManagementView> {
         height: MediaQuery.of(context).size.height - 50,
         padding: EdgeInsets.symmetric(vertical: 15),
         child: Column(children: [
+          Container(
+            width: MediaQuery.of(context).size.width - 20,
+            height: 40,
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.white,
+                border: Border.symmetric(
+                    vertical: BorderSide(color: Colors.grey, width: 5),
+                    horizontal: BorderSide(color: Colors.grey, width: 3))),
+            child: Center(
+              child: Text(
+                'Thông báo',
+                style: TextStyle(color: Colors.blueAccent, fontSize: 20),
+              ),
+            ),
+          ),
           SizedBox(
             height: 5,
           ),
           FutureBuilder(
-              future: _api.client.getSuggestion(),
+              future: _api.client.getInvitation(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  suggestions = snapshot.data;
+                  invitations = snapshot.data;
                   return Expanded(
                     child: Container(
                       height: MediaQuery.of(context).size.height - 70,
                       padding:
                           EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                       child: ListView.builder(
-                        itemBuilder: (context, index) => SuggestionElement(
-                          suggestions.suggestions[index],
+                        itemBuilder: (context, index) => InvitationElement(
+                          invitations.invitations[index],
                         ),
-                        itemCount: suggestions.suggestions.length,
+                        itemCount: invitations.invitations.length,
                       ),
                     ),
                   );
@@ -59,12 +76,23 @@ class _RequestManagementView extends State<RequestManagementView> {
     );
   }
 
-  Widget SuggestionElement(SuggestionResponse suggestion) {
+  Widget InvitationElement(InvitationResponse invitation) {
     return Container(
       height: 100,
       child: Card(
         child: Row(
           children: [
+            Container(
+              width: 80,
+              height: 80,
+              margin: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: NetworkImage(
+                          'https://storage.googleapis.com/tutor-a4d9d.appspot.com/c67a91c5-e28f-4084-af61-71f1f68ec184jpg'),
+                      fit: BoxFit.cover)),
+            ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,7 +105,7 @@ class _RequestManagementView extends State<RequestManagementView> {
                       children: [
                         Expanded(
                             child: Text(
-                          'Nguyễn Văn A đã gửi yêu cầu nhận lớp',
+                          invitation.nameStudent + ' đã mời bạn dạy học',
                           style: TextStyle(fontSize: 15),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -96,25 +124,29 @@ class _RequestManagementView extends State<RequestManagementView> {
                             padding: EdgeInsets.only(right: 5, bottom: 1),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20)),
-                            child: suggestion.status == 0
+                            child: invitation.status == 0
                                 ? ElevatedButton(
                                     onPressed: () async {
                                       await dialog.onLoading(
                                           context, 'Đang xử lý');
-                                      await _api.client.acceptSuggestion(
-                                          suggestion.idPost,
-                                          suggestion.idTutor);
+                                      await _api.client.acceptInvitation(
+                                          invitation.idStudent);
                                       dialog.showAlertDialog(
                                           context,
                                           'Thông báo',
                                           'Đã chấp nhận thành công');
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  InvitationManagementView()));
                                     },
                                     child: Center(child: Text('Chấp nhận')),
                                   )
                                 : ElevatedButton(
                                     onPressed: null,
                                     child: Center(
-                                        child: Text(suggestion.status == 1
+                                        child: Text(invitation.status == 1
                                             ? 'Đã chấp nhận'
                                             : 'Chấp nhận')),
                                   )),
@@ -124,22 +156,27 @@ class _RequestManagementView extends State<RequestManagementView> {
                           padding: EdgeInsets.only(right: 5, bottom: 1),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20)),
-                          child: suggestion.status == 0
+                          child: invitation.status == 0
                               ? ElevatedButton(
                                   onPressed: () async {
                                     await dialog.onLoading(
                                         context, 'Đang xử lý');
-                                    await _api.client.acceptSuggestion(
-                                        suggestion.idPost, suggestion.idTutor);
+                                    await _api.client
+                                        .denyInvitation(invitation.idStudent);
                                     dialog.showAlertDialog(context, 'Thông báo',
                                         'Đã từ chối thành công');
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                InvitationManagementView()));
                                   },
                                   child: Center(child: Text('Từ chối')),
                                 )
                               : ElevatedButton(
                                   onPressed: null,
                                   child: Center(
-                                      child: Text(suggestion.status == 2
+                                      child: Text(invitation.status == 2
                                           ? 'Đã từ chối'
                                           : 'Từ chối')),
                                 ),

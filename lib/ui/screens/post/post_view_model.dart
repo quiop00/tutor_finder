@@ -30,4 +30,25 @@ class PostViewModel extends BaseViewModel {
     setBusy(false);
     notifyListeners();
   }
+
+  update(id) async {
+    setBusy(true);
+    postBody.schedule = Schedule.covertScheduleToJson(schedules);
+
+    print(postBody.toJson());
+    await _api.client.updatePost(id, postBody).then((value) {
+      message = "Sửa bài đăng thành công";
+    }).catchError((Object obj) {
+      switch (obj.runtimeType) {
+        case DioError:
+          // Here's the sample to get the failed response error code and message
+          final res = (obj as DioError).response;
+          message = "Có lỗi xảy ra";
+          print(res);
+          break;
+      }
+    });
+    setBusy(false);
+    notifyListeners();
+  }
 }

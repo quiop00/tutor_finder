@@ -42,69 +42,15 @@ class _HomeViewTutor extends State<HomeViewTutor> {
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 5),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          // Stack(
-          //   children: [
-          //     Positioned(
-          //         child: Container(
-          //       height: 6 + MediaQuery.of(context).size.height * 0.06,
-          //     )),
-          //     Positioned(
-          //       child: Container(
-          //         height: MediaQuery.of(context).size.height * 0.04,
-          //         color: Color.fromARGB(255, 49, 243, 208),
-          //       ),
-          //     ),
-          //     Positioned(
-          //       top: 5,
-          //       left: MediaQuery.of(context).size.width * 0.15,
-          //       child: Center(
-          //         child: InkWell(
-          //           onTap: () {
-          //             Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(
-          //                     builder: (context) => SearchView()));
-          //           },
-          //           child: Container(
-          //               padding: EdgeInsets.all(6),
-          //               width: MediaQuery.of(context).size.width * 0.7,
-          //               height: MediaQuery.of(context).size.height * 0.06,
-          //               decoration: BoxDecoration(
-          //                 color: Colors.white,
-          //                 borderRadius: BorderRadius.circular(20),
-          //                 boxShadow: [
-          //                   BoxShadow(
-          //                     color: Colors.grey
-          //                         .withOpacity(0.3), //color of shadow
-          //                     spreadRadius: 2, //spread radius
-          //                     blurRadius: 2, // blur radius
-          //                     offset:
-          //                         Offset(0, 1), // changes position of shadow
-          //                   ),
-          //                 ],
-          //               ),
-          //               child: Row(
-          //                 children: [
-          //                   Icon(
-          //                     Icons.search,
-          //                     size: 18,
-          //                   ),
-          //                   SizedBox(
-          //                     width: 5,
-          //                   ),
-          //                   Text(
-          //                     "Tìm gia sư",
-          //                     style: TextStyle(fontSize: 18),
-          //                   )
-          //                 ],
-          //               )),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
-          SizedBox(
-            height: 10,
+          Container(
+            width: MediaQuery.of(context).size.width - 10,
+            height: 150,
+            margin: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(
+                        "https://michiganvirtual.org/wp-content/uploads/2020/05/online-synchronous-class-1024x661.jpg"),
+                    fit: BoxFit.cover)),
           ),
           Container(
               padding: EdgeInsets.all(10),
@@ -129,7 +75,6 @@ class PostList extends StatelessWidget {
   final api = locator<Api>();
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder(
         future: api.client.getPosts(),
         builder: (context, snapshot) {

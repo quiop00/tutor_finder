@@ -61,7 +61,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
               backgroundColor: Color.fromARGB(255, 49, 243, 208),
             ),
             bottomNavigationBar: Container(
-              padding: EdgeInsets.only(left: 15, right: 15, bottom: 50),
+              padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -76,11 +76,7 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                         await model.update();
                         // dialog.showAlertDialog(
                         //     context, 'Thông báo', model.message);
-                        if (model.message == "OK")
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProfileTutorView()));
+                        if (model.message == "OK") Navigator.pop(context);
                       },
                       child: Text('Cập nhật'))
                 ],

@@ -10,6 +10,7 @@ import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/profile/profile_view_model.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_student_view.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_view.dart';
+import 'package:tutor_finder_app/ui/screens/update_user/update_user_view.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -68,7 +69,7 @@ class _ProfileView extends State<ProfileView> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: NetworkImage(
-                                          'https://manage-tutor-123.herokuapp.com/api/downloadFile/avatar_default.png'),
+                                          'https://storage.googleapis.com/tutor-a4d9d.appspot.com/c67a91c5-e28f-4084-af61-71f1f68ec184jpg'),
                                       fit: BoxFit.cover),
                                   border: new Border.all(
                                     color: Colors.white,
@@ -122,7 +123,7 @@ class _ProfileView extends State<ProfileView> {
                         right: MediaQuery.of(context).size.width * 0.08,
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          height: MediaQuery.of(context).size.height * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.3,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(2),
@@ -139,68 +140,6 @@ class _ProfileView extends State<ProfileView> {
                           ),
                           child: ListView(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.note_add,
-                                        size: 30,
-                                        color:
-                                            Color.fromARGB(255, 49, 243, 208),
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Quản lý yêu cầu',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.navigate_next, size: 30)
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Divider(
-                                height: 1,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.favorite,
-                                          size: 30,
-                                          color: Color.fromARGB(
-                                              255, 49, 243, 208)),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text('Giáo viên đã lưu',
-                                          style: TextStyle(fontSize: 20)),
-                                    ],
-                                  ),
-                                  Icon(Icons.navigate_next, size: 30)
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Divider(
-                                height: 1,
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
                               InkWell(
                                 onTap: () {
                                   Navigator.push(
@@ -241,25 +180,33 @@ class _ProfileView extends State<ProfileView> {
                               SizedBox(
                                 height: 5,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(Icons.settings,
-                                          size: 30,
-                                          color: Color.fromARGB(
-                                              255, 49, 243, 208)),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text('Đổi mật khẩu',
-                                          style: TextStyle(fontSize: 20)),
-                                    ],
-                                  ),
-                                  Icon(Icons.navigate_next, size: 30)
-                                ],
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UpdateView()));
+                                },
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(Icons.settings,
+                                            size: 30,
+                                            color: Color.fromARGB(
+                                                255, 49, 243, 208)),
+                                        SizedBox(
+                                          width: 8,
+                                        ),
+                                        Text('Đổi mật khẩu',
+                                            style: TextStyle(fontSize: 20)),
+                                      ],
+                                    ),
+                                    Icon(Icons.navigate_next, size: 30)
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 5,
@@ -272,8 +219,8 @@ class _ProfileView extends State<ProfileView> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .pop();
+                                  Navigator.pushReplacementNamed(
+                                      context, '/login');
                                 },
                                 child: Row(
                                   mainAxisAlignment:

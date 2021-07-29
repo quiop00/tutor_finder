@@ -10,7 +10,7 @@ TutorResponse _$TutorResponseFromJson(Map<String, dynamic> json) {
   return TutorResponse()
     ..id = json['id'] as int
     ..name = json['name'] as String
-    ..phoneNumber = json['phoneNumber'] as String
+    ..phoneNumber = json['phonenumber'] as String
     ..avatar = json['avatar'] as String
     ..qualification = json['qualification'] as String
     ..subject = (json['subject'] as List)?.map((e) => e as String)?.toList()
@@ -31,7 +31,7 @@ Map<String, dynamic> _$TutorResponseToJson(TutorResponse instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'phoneNumber': instance.phoneNumber,
+      'phonenumber': instance.phoneNumber,
       'avatar': instance.avatar,
       'qualification': instance.qualification,
       'subject': instance.subject,

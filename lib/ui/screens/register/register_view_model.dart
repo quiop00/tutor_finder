@@ -16,11 +16,10 @@ class RegisterViewModel extends BaseViewModel {
   Future<void> register() async {
     if (registerBody == null) return;
     registerBody.role = roles;
-    print(registerBody.role);
-    print(registerBody.username);
     setBusy(true);
     await _api.client.register(registerBody).then((value) {
       message = value.message;
+      status = true;
     }).catchError((Object obj) {
       switch (obj.runtimeType) {
         case DioError:

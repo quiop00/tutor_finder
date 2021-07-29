@@ -10,6 +10,7 @@ part 'tutor_response.g.dart';
 class TutorResponse {
   int id;
   String name;
+  @JsonKey(name: 'phonenumber')
   String phoneNumber;
   String avatar;
   String qualification;

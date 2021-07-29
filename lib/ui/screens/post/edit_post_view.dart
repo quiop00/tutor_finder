@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
 import 'package:tutor_finder_app/services/body/post_body.dart';
 import 'package:tutor_finder_app/services/response/post_response.dart';
+import 'package:tutor_finder_app/ui/screens/management/post_management_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
 import 'package:tutor_finder_app/settings.dart' as setting;
@@ -49,6 +50,8 @@ class _PostEditView extends State<PostEditView> {
     return ViewModelBuilder<PostViewModel>.reactive(
         onModelReady: (model) {
           model.schedules = schedules;
+          model.postBody.grade = post.grade;
+          model.postBody.subject = post.subjects;
         },
         viewModelBuilder: () => PostViewModel(),
         builder: (context, model, child) => Scaffold(
@@ -62,7 +65,7 @@ class _PostEditView extends State<PostEditView> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Xem yêu cầu này ngay'),
+                          Text('Sửa yêu cầu'),
                           ElevatedButton(
                               onPressed: () async {
                                 if (!_formKey.currentState.validate()) {
@@ -77,20 +80,25 @@ class _PostEditView extends State<PostEditView> {
                                     count++;
                                   }
                                 }
+                                if (model.postBody.subject.isEmpty) return;
+                                if (model.postBody.grade == null) return;
                                 if (count == 0) {
                                   dialog.showAlertDialog(context,
                                       'Lỗi đăng bài', 'Vui lòng chọn buổi học');
                                   return;
                                 }
-                                await dialog.onLoading(
-                                    context, 'Đang đăng bài');
-                                await model.post();
+                                await dialog.onLoading(context, 'Đang sửa bài');
+                                await model.update(post.postId);
                                 dialog.showAlertDialog(
                                     context, 'Thông báo', model.message);
-                                if (model.message == "OK")
-                                  Navigator.pushNamed(context, '/home');
+                                if (model.message == "Sửa bài đăng thành công")
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              PostManagementView()));
                               },
-                              child: Text('Đăng yêu cầu'))
+                              child: Text('Sửa yêu cầu'))
                         ],
                       ),
                     )
@@ -186,7 +194,7 @@ class _PostEditView extends State<PostEditView> {
                             padding: EdgeInsets.symmetric(horizontal: 15),
                             child: Container(
                               padding: EdgeInsets.all(10),
-                              height: MediaQuery.of(context).size.height * 0.42,
+                              height: MediaQuery.of(context).size.height * 0.56,
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(2),
@@ -214,7 +222,7 @@ class _PostEditView extends State<PostEditView> {
                                       padding: EdgeInsets.all(10),
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              0.2,
+                                              0.18,
                                       decoration: BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.circular(2),
@@ -231,50 +239,51 @@ class _PostEditView extends State<PostEditView> {
                                       ),
                                       child: Column(
                                         children: <Widget>[
-                                          // MultiSelectDialogField(
-                                          //   initialValue:
-                                          //       model.postBody.subject,
-                                          //   listType: MultiSelectListType.LIST,
-                                          //   searchable: true,
-                                          //   buttonText: Text("Chọn môn dạy"),
-                                          //   title: Text("Môn"),
-                                          //   items: _subjects,
-                                          //   // onConfirm: (values) {
-                                          //   //   setState(() {
-                                          //   //     model.postBody.subject = values;
-                                          //   //   });
-                                          //   // },
-                                          // ),
-                                          post.subjects == null ||
-                                                  post.subjects.isEmpty
-                                              ? Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    "None selected",
-                                                    style: TextStyle(
-                                                        color: Colors.black54),
-                                                  ))
-                                              : MultiSelectChipDisplay(
-                                                  items: post.subjects
-                                                      .map((e) =>
-                                                          MultiSelectItem(e, e))
-                                                      .toList(),
-                                                ),
+                                          MultiSelectDialogField(
+                                            initialValue:
+                                                model.postBody.subject,
+                                            listType: MultiSelectListType.LIST,
+                                            searchable: true,
+                                            buttonText: Text("Chọn môn dạy"),
+                                            title: Text("Môn"),
+                                            items: _subjects,
+                                            onConfirm: (values) {
+                                              setState(() {
+                                                model.postBody.subject = values;
+                                              });
+                                            },
+                                          ),
                                         ],
                                       ),
                                     ),
                                   ),
-                                  _formField(post.grade, Icons.note_add, 'Lớp',
-                                      validator: (input) {
-                                    if (input.length == 0) {
-                                      return '';
-                                    }
-                                    return null;
-                                  }, onSaved: (input) {
-                                    model.postBody.grade = input;
-                                  }),
+                                  Container(
+                                      child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.emoji_people,
+                                          color: Color.fromARGB(
+                                              255, 49, 243, 208)),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      DropdownButton<String>(
+                                        hint: Text("Lớp"),
+                                        value: model.postBody.grade,
+                                        items: grades.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            model.postBody.grade = val;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  )),
                                   _formField(post.price, Icons.monetization_on,
                                       'Học phí dự kiến (VND/buổi)',
                                       validator: (input) {
@@ -409,7 +418,7 @@ class _PostEditView extends State<PostEditView> {
               child: Container(
             child: TextFormField(
               initialValue: initValue ?? '',
-              enabled: isEdit,
+              //enabled: isEdit,
               validator: validator,
               onSaved: onSaved,
               decoration: InputDecoration(
@@ -444,7 +453,7 @@ class _PostEditView extends State<PostEditView> {
                 children: [
                   InkWell(
                     onTap: () {
-                      if (!isEdit) return;
+                      //if (!isEdit) return;
                       setState(() {
                         model.schedules[index].morning =
                             !model.schedules[index].morning;
@@ -463,7 +472,7 @@ class _PostEditView extends State<PostEditView> {
                   ),
                   InkWell(
                     onTap: () {
-                      if (!isEdit) return;
+                      //if (!isEdit) return;
                       setState(() {
                         model.schedules[index].afternoon =
                             !model.schedules[index].afternoon;
@@ -480,7 +489,7 @@ class _PostEditView extends State<PostEditView> {
                   Expanded(
                     child: InkWell(
                       onTap: () {
-                        if (!isEdit) return;
+                        //if (!isEdit) return;
                         setState(() {
                           model.schedules[index].night =
                               !model.schedules[index].night;

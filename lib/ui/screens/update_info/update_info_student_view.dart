@@ -46,7 +46,7 @@ class _UpdateInfoStudentView extends State<UpdateInfoStudentView> {
               backgroundColor: Color.fromARGB(255, 49, 243, 208),
             ),
             bottomNavigationBar: Container(
-              padding: EdgeInsets.only(left: 15, right: 15, bottom: 50),
+              padding: EdgeInsets.only(left: 15, right: 15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -62,7 +62,7 @@ class _UpdateInfoStudentView extends State<UpdateInfoStudentView> {
                         dialog.showAlertDialog(
                             context, 'Thông báo', model.message);
                         if (model.message == "OK")
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ProfileView()));
@@ -105,7 +105,7 @@ class _UpdateInfoStudentView extends State<UpdateInfoStudentView> {
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                               image: NetworkImage(
-                                                  'https://manage-tutor-123.herokuapp.com/api/downloadFile/avatar_default.png'),
+                                                  'https://storage.googleapis.com/tutor-a4d9d.appspot.com/c67a91c5-e28f-4084-af61-71f1f68ec184jpg'),
                                               fit: BoxFit.cover),
                                           border: Border.all(
                                             color: Colors.white,

@@ -31,7 +31,7 @@ class _HomeViewLearner extends State<HomeViewLearner> {
         title: Text("Gia sư"),
       ),
       body: Container(
-        color: Color.fromRGBO(246, 246, 246, 0.8),
+        color: Colors.white,
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Stack(
             children: [
@@ -94,6 +94,16 @@ class _HomeViewLearner extends State<HomeViewLearner> {
               ),
             ],
           ),
+          Container(
+            width: MediaQuery.of(context).size.width - 10,
+            height: 100,
+            margin: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(
+                        "https://www.mtutor.world/assets/images/home_banner.png"),
+                    fit: BoxFit.cover)),
+          ),
           SizedBox(
             height: 10,
           ),
@@ -120,20 +130,6 @@ class TutorList extends StatelessWidget {
   final api = locator<Api>();
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    // return Container(
-    //   child: ViewModelBuilder<HomeViewLearnerModel>.reactive(
-    //     builder: (context, model, child) => _listTutors,
-    //     viewModelBuilder: () => HomeViewLearnerModel(),
-    //     onModelReady: (model) => model.getTutors(
-    //       onSuccess: () {
-    //         tutors = model.tutorsResponse.tutors;
-    //         print(model.tutorsResponse.toJson());
-    //       },
-    //     ),
-    //   ),
-    // );
-
     return FutureBuilder(
         future: api.client.getTutors(),
         builder: (context, snapshot) {
@@ -150,7 +146,7 @@ class TutorList extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                TutorsDetail(tutor: tutors[index])));
+                                TutorsDetail(id: tutors[index].id)));
                   },
                 );
               },
@@ -162,33 +158,4 @@ class TutorList extends StatelessWidget {
             );
         });
   }
-
-  Widget get _listTutors =>
-      Consumer<HomeViewLearnerModel>(builder: (context, model, child) {
-        if (model.tutorsResponse != null) {
-          tutors = model.tutorsResponse.tutors.toList();
-          print(model.tutorsResponse.tutors[0].toJson());
-        } else {
-          return Center(
-            child: Text('No data'),
-          );
-        }
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            return GestureDetector(
-              child: TutorElement(
-                tutor: tutors[index],
-              ),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TutorsDetail(tutor: tutors[index])));
-              },
-            );
-          },
-          itemCount: tutors.length,
-        );
-      });
 }

@@ -1,25 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'invitation_response.dart';
+part of 'class_response.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-InvitationResponse _$InvitationResponseFromJson(Map<String, dynamic> json) {
-  return InvitationResponse()
-    ..id = json['id'] as int
+ClassResponse _$ClassResponseFromJson(Map<String, dynamic> json) {
+  return ClassResponse()
     ..idStudent = json['idStudent'] as int
+    ..idPost = json['idPost'] as int
     ..nameStudent = json['nameStudent'] as String
-    ..idTutor = json['idTutor'] as int
-    ..status = json['status'] as int;
+    ..titlePost = json['titlePost'] as String;
 }
 
-Map<String, dynamic> _$InvitationResponseToJson(InvitationResponse instance) =>
+Map<String, dynamic> _$ClassResponseToJson(ClassResponse instance) =>
     <String, dynamic>{
-      'id': instance.id,
       'idStudent': instance.idStudent,
+      'idPost': instance.idPost,
       'nameStudent': instance.nameStudent,
-      'idTutor': instance.idTutor,
-      'status': instance.status,
+      'titlePost': instance.titlePost,
     };

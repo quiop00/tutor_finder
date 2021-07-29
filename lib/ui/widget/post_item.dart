@@ -27,10 +27,11 @@ class PostElement extends StatelessWidget {
                         children: [
                           Expanded(
                               child: Text(
-                            post.title ?? 'Cần tìm gia sư luyện thi chứng chỉ',
+                            post.title ?? 'Cần tìm gia sư',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: 15),
                           )),
-                          Icon(Icons.favorite_border)
                         ],
                       ),
                     ),
