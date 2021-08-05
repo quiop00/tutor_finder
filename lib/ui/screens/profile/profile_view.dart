@@ -6,6 +6,7 @@ import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/services/api_service.dart';
 import 'package:tutor_finder_app/services/body/user_body.dart';
+import 'package:tutor_finder_app/services/local_storage_service.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/ui/screens/profile/profile_view_model.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_student_view.dart';
@@ -218,7 +219,8 @@ class _ProfileView extends State<ProfileView> {
                                 height: 5,
                               ),
                               GestureDetector(
-                                onTap: () {
+                                onTap: () async {
+                                  await PreferenceUtils.setString('token', '');
                                   Navigator.pushReplacementNamed(
                                       context, '/login');
                                 },

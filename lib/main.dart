@@ -9,6 +9,7 @@ import 'package:tutor_finder_app/ui/screens/notifies/notifications_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view.dart';
 import 'package:tutor_finder_app/ui/screens/profile/profile_view.dart';
 import 'package:tutor_finder_app/ui/screens/register/register_view.dart';
+import 'package:tutor_finder_app/ui/screens/splash/splash_screen.dart';
 import 'ui/screens/main/main_view.dart';
 
 void main() {
@@ -27,14 +28,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/login',
+      initialRoute: '/splash',
       routes: {
+        '/splash': (context) => SplashPage(),
         '/login': (context) => LoginView(),
         '/register': (context) => RegisterView(),
         '/home': (context) => Home(),
         '/post': (context) => PostView(),
         '/profile': (context) => ProfileView(),
-        '/invitation': (context) => InvitationView()
+        '/invitation': (context) => InvitationView(),
       },
     );
   }
