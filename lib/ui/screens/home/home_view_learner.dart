@@ -100,8 +100,7 @@ class _HomeViewLearner extends State<HomeViewLearner> {
             margin: EdgeInsets.all(12),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(
-                        "https://www.mtutor.world/assets/images/home_banner.png"),
+                    image: AssetImage("assets/images/home_banner.png"),
                     fit: BoxFit.cover)),
           ),
           SizedBox(

@@ -48,8 +48,7 @@ class _HomeViewTutor extends State<HomeViewTutor> {
             margin: EdgeInsets.all(12),
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(
-                        "https://michiganvirtual.org/wp-content/uploads/2020/05/online-synchronous-class-1024x661.jpg"),
+                    image: AssetImage("assets/images/tutor.jpg"),
                     fit: BoxFit.cover)),
           ),
           Container(

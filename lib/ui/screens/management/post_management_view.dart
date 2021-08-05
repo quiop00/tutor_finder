@@ -12,6 +12,8 @@ import 'package:tutor_finder_app/ui/screens/management/post_management_view_mode
 import 'package:tutor_finder_app/ui/screens/notifies/notifications_view_model.dart';
 import 'package:tutor_finder_app/ui/screens/post/edit_post_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view.dart';
+import 'package:tutor_finder_app/ui/widget/empty_content.dart';
+import 'package:tutor_finder_app/ui/widget/navigation_bar.dart';
 import 'package:tutor_finder_app/ui/widget/notification_item.dart';
 
 class PostManagementView extends StatefulWidget {
@@ -39,56 +41,45 @@ class _PostManagementView extends State<PostManagementView> {
         backgroundColor: Color.fromARGB(255, 49, 243, 208),
         title: Text("Danh sách bài đăng"),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/post');
+        },
+        child: Icon(Icons.add),
+      ),
       body: SafeArea(
-          child: Container(
-        color: Colors.white,
-        height: MediaQuery.of(context).size.height - 50,
-        padding: EdgeInsets.symmetric(vertical: 15),
-        child: Column(children: [
-          Container(
-            height: 40,
-            width: MediaQuery.of(context).size.width * 0.6,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PostView()));
-                },
-                child: Text('Thêm bài'),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          FutureBuilder(
-              future: _api.client.getPostsByStudent(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  posts = snapshot.data;
-                  onDelete = posts.posts.map((e) => false).toList();
-                  return Expanded(
-                    child: Container(
-                      height: MediaQuery.of(context).size.height - 70,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      child: ListView.builder(
-                        itemBuilder: (context, index) =>
-                            PostElement(posts.posts[index], index),
-                        itemCount: posts.posts.length,
-                      ),
-                    ),
-                  );
-                } else
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-              })
-        ]),
-      )),
+        child: Container(
+            color: Colors.white,
+            height: MediaQuery.of(context).size.height - 50,
+            padding: EdgeInsets.symmetric(vertical: 15),
+            child: FutureBuilder(
+                future: _api.client.getPostsByStudent(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    posts = snapshot.data;
+                    onDelete = posts.posts.map((e) => false).toList();
+                    return posts != null && posts.posts.length != 0
+                        ? Expanded(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height - 70,
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 5, horizontal: 15),
+                              child: ListView.builder(
+                                itemBuilder: (context, index) =>
+                                    PostElement(posts.posts[index], index),
+                                itemCount: posts.posts.length,
+                              ),
+                            ),
+                          )
+                        : EmptyContent(
+                            message: 'Bạn hiện tại không có bài đăng nào!',
+                          );
+                  } else
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                })),
+      ),
     );
   }
 
@@ -105,8 +96,9 @@ class _PostManagementView extends State<PostManagementView> {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: NetworkImage(
-                          'https://image.flaticon.com/icons/png/512/1999/1999310.png'),
+                      image: AssetImage(
+                        'assets/images/post.png',
+                      ),
                       fit: BoxFit.cover)),
             ),
             Expanded(

@@ -24,6 +24,7 @@ class _PostView extends State<PostView> {
   List<Schedule> schedules = [];
   List<String> subjects = setting.subjects;
   List<String> grades = setting.grades;
+  List<String> locations = setting.locations;
   var _subjects;
   @override
   void initState() {
@@ -72,8 +73,7 @@ class _PostView extends State<PostView> {
                           }
                           await dialog.onLoading(context, 'Đang đăng bài');
                           await model.post();
-                          dialog.showAlertDialog(
-                              context, 'Thông báo', model.message);
+                          print(model.message);
                           if (model.message == "OK") Navigator.pop(context);
                         },
                         child: Text('Đăng yêu cầu'))
@@ -291,15 +291,33 @@ class _PostView extends State<PostView> {
                                   }, onSaved: (input) {
                                     model.postBody.phoneNumber = input;
                                   }),
-                                  _formField(Icons.home, 'Địa chỉ',
-                                      validator: (input) {
-                                    if (input.isEmpty) {
-                                      return '';
-                                    }
-                                    return null;
-                                  }, onSaved: (input) {
-                                    model.postBody.address = input;
-                                  })
+                                  Container(
+                                      child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.location_city,
+                                          color: Color.fromARGB(
+                                              255, 49, 243, 208)),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      DropdownButton<String>(
+                                        hint: Text("Địa chỉ"),
+                                        value: model.postBody.address,
+                                        items: locations.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            model.postBody.address = val;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  )),
                                 ],
                               ),
                             ),

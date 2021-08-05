@@ -17,7 +17,7 @@ class PostViewModel extends BaseViewModel {
 
     print(postBody.toJson());
     await _api.client.post(postBody).then((value) {
-      message = value.message;
+      message = 'OK';
     }).catchError((Object obj) {
       switch (obj.runtimeType) {
         case DioError:

@@ -33,6 +33,7 @@ class _PostEditView extends State<PostEditView> {
   List<Schedule> schedules = [];
   List<String> subjects = setting.subjects;
   List<String> grades = setting.grades;
+  List<String> locations = setting.locations;
   var _subjects;
   @override
   void initState() {
@@ -305,15 +306,33 @@ class _PostEditView extends State<PostEditView> {
                                   }, onSaved: (input) {
                                     model.postBody.phoneNumber = input;
                                   }),
-                                  _formField(post.address, Icons.home,
-                                      'Địa chỉ cụ thể', validator: (input) {
-                                    if (input.isEmpty) {
-                                      return '';
-                                    }
-                                    return null;
-                                  }, onSaved: (input) {
-                                    model.postBody.address = input;
-                                  })
+                                  Container(
+                                      child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Icon(Icons.location_city,
+                                          color: Color.fromARGB(
+                                              255, 49, 243, 208)),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      DropdownButton<String>(
+                                        hint: Text("Địa chỉ"),
+                                        value: model.postBody.address,
+                                        items: locations.map((value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(value),
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          setState(() {
+                                            model.postBody.address = val;
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  ))
                                 ],
                               ),
                             ),
