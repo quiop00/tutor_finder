@@ -8,6 +8,7 @@ import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/services/api_service.dart';
 import 'package:tutor_finder_app/services/local_storage_service.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
+import 'package:tutor_finder_app/ui/screens/main/main_view.dart';
 import 'package:tutor_finder_app/ui/screens/profile/profile_view_model.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_view.dart';
 import 'package:tutor_finder_app/ui/screens/update_user/update_user_view.dart';
@@ -24,6 +25,14 @@ class ProfileTutorView extends StatefulWidget {
 
 class _ProfileTutorView extends State<ProfileTutorView> {
   final _api = locator<Api>();
+  var fetch;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetch = _api.client.getTutorProfile();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +47,7 @@ class _ProfileTutorView extends State<ProfileTutorView> {
       ),
       body: SingleChildScrollView(
           child: FutureBuilder(
-        future: _api.client.getTutorProfile(),
+        future: fetch,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Tutor tutor = snapshot.data;
@@ -97,6 +106,9 @@ class _ProfileTutorView extends State<ProfileTutorView> {
                             if (pickedFile != null) {
                               _image = File(pickedFile.path);
                               await _api.client.uploadAvatar(_image);
+                              setState(() {
+                                fetch = _api.client.getTutorProfile();
+                              });
                             }
                           },
                           child: Container(
@@ -141,36 +153,6 @@ class _ProfileTutorView extends State<ProfileTutorView> {
                           ),
                           child: ListView(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.note_add,
-                                        size: 30,
-                                        color:
-                                            Color.fromARGB(255, 49, 243, 208),
-                                      ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Text(
-                                        'Quản lý đề nghị dạy',
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                    ],
-                                  ),
-                                  Icon(Icons.navigate_next, size: 30)
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Divider(
-                                height: 1,
-                              ),
                               SizedBox(
                                 height: 5,
                               ),

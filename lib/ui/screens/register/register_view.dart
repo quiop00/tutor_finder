@@ -324,8 +324,7 @@ class _RegisterView extends State<RegisterView> {
                               if (model.status)
                                 Timer timer = Timer(
                                     const Duration(milliseconds: 800), () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/login');
+                                  Navigator.pop(context);
                                 });
                             }
                           : null,

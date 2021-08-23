@@ -7,6 +7,7 @@ import 'package:tutor_finder_app/services/body/login_body.dart';
 import 'package:tutor_finder_app/services/body/register_body.dart';
 import 'package:tutor_finder_app/services/body/tutor_body.dart';
 import 'package:tutor_finder_app/services/response/add_post_response.dart';
+import 'package:tutor_finder_app/services/response/comments_response.dart';
 import 'package:tutor_finder_app/services/response/invitations_response.dart';
 import 'package:tutor_finder_app/services/response/register_response.dart';
 import 'package:tutor_finder_app/services/response/suggestion_response.dart';
@@ -78,6 +79,10 @@ abstract class ApiClient {
   Future<void> uploadAvatar(@Part() File file);
   @GET('/api/tutor/class')
   Future<TakenClass> getTakenClass();
+  @GET('/comment')
+  Future<CommentsResponse> getComments();
+  @GET('/post/recommendation')
+  Future<PostsResponse> getRecommend();
 }
 
 class Api {

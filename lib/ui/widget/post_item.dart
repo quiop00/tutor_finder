@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tutor_finder_app/models/post_model.dart';
+import 'package:marquee/marquee.dart';
 import 'package:tutor_finder_app/services/response/post_response.dart';
-import 'package:tutor_finder_app/services/response/tutor_response.dart';
 
 //Tutor element for list view in home page
 class PostElement extends StatelessWidget {
@@ -22,16 +22,21 @@ class PostElement extends StatelessWidget {
                   children: [
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                      height: 15,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           Expanded(
-                              child: Text(
-                            post.title ?? 'Cần tìm gia sư',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 15),
-                          )),
+                              child: post.title.length > 30
+                                  ? Marquee(
+                                      text: post.title ?? 'Cần tìm gia sư',
+                                      pauseAfterRound: Duration(seconds: 2),
+                                      textDirection: TextDirection.ltr,
+                                      accelerationDuration:
+                                          Duration(seconds: 5),
+                                    )
+                                  : Text(post.title)),
                         ],
                       ),
                     ),
@@ -57,7 +62,7 @@ class PostElement extends StatelessWidget {
                       child: Row(
                         children: [
                           Icon(
-                            IconData(0xe8c9, fontFamily: 'MyFont'),
+                            Icons.menu_book,
                             size: 12,
                           ),
                           SizedBox(

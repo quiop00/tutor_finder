@@ -17,6 +17,14 @@ class RequestManagementView extends StatefulWidget {
 class _RequestManagementView extends State<RequestManagementView> {
   final _api = locator<Api>();
   SuggestionsResponse suggestions = SuggestionsResponse();
+  var fetch;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetch = _api.client.getSuggestion();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,11 +59,14 @@ class _RequestManagementView extends State<RequestManagementView> {
             height: 10,
           ),
           FutureBuilder(
-              future: _api.client.getSuggestion(),
+              future: fetch,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   suggestions = snapshot.data;
-                  print(suggestions.toJson());
+                  if (suggestions == null) {
+                    return Container();
+                  }
+
                   if (suggestions.suggestions.length != 0)
                     return Expanded(
                       child: Container(
@@ -159,6 +170,9 @@ class _RequestManagementView extends State<RequestManagementView> {
                                       await _api.client.acceptSuggestion(
                                           suggestion.idPost,
                                           suggestion.idTutor);
+                                      setState(() {
+                                        fetch = _api.client.getSuggestion();
+                                      });
                                       dialog.showAlertDialog(
                                           context,
                                           'Thông báo',
@@ -186,6 +200,9 @@ class _RequestManagementView extends State<RequestManagementView> {
                                         context, 'Đang xử lý');
                                     await _api.client.denySuggestion(
                                         suggestion.idPost, suggestion.idTutor);
+                                    setState(() {
+                                      fetch = _api.client.getSuggestion();
+                                    });
                                     dialog.showAlertDialog(context, 'Thông báo',
                                         'Đã từ chối thành công');
                                   },

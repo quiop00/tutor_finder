@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/tutor_model.dart';
 import 'package:tutor_finder_app/services/body/user_body.dart';
+import 'package:tutor_finder_app/ui/screens/main/main_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
 import 'package:tutor_finder_app/ui/screens/profile/profile_view.dart';
 import 'package:tutor_finder_app/ui/screens/update_info/update_info_view_model.dart';
@@ -65,7 +66,9 @@ class _UpdateInfoStudentView extends State<UpdateInfoStudentView> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfileView()));
+                                  builder: (context) => Home(
+                                        selected: 4,
+                                      )));
                       },
                       child: Text('Cập nhật'))
                 ],
@@ -184,7 +187,8 @@ class _UpdateInfoStudentView extends State<UpdateInfoStudentView> {
                                     ),
                                   ],
                                 )),
-                                _formField('', Icons.book, 'Tuổi',
+                                _formField(
+                                    '${student.age ?? ''}', Icons.book, 'Tuổi',
                                     validator: (input) {
                                   if (input.length == 0) {
                                     return '';
@@ -193,8 +197,10 @@ class _UpdateInfoStudentView extends State<UpdateInfoStudentView> {
                                 }, onSaved: (input) {
                                   model.userBody.age = int.tryParse(input);
                                 }, type: TextInputType.number),
-                                _formField('', Icons.note_add, 'Số điện thoại',
-                                    validator: (input) {
+                                _formField(
+                                    student.phoneNumber ?? '',
+                                    Icons.note_add,
+                                    'Số điện thoại', validator: (input) {
                                   if (input.length == 0) {
                                     return '';
                                   }

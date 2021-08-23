@@ -4,6 +4,7 @@ import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/invitation_response.dart';
 import 'package:tutor_finder_app/services/response/invitations_response.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
+import 'package:tutor_finder_app/ui/screens/main/main_view.dart';
 
 class InvitationManagementView extends StatefulWidget {
   @override
@@ -15,6 +16,14 @@ class InvitationManagementView extends StatefulWidget {
 class _InvitationManagementView extends State<InvitationManagementView> {
   final _api = locator<Api>();
   InvitationsResponse invitations = InvitationsResponse();
+  var fetch;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetch = _api.client.getInvitation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,21 +58,34 @@ class _InvitationManagementView extends State<InvitationManagementView> {
             height: 5,
           ),
           FutureBuilder(
-              future: _api.client.getInvitation(),
+              future: fetch,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   invitations = snapshot.data;
+                  if (invitations.invitations.length != 0)
+                    return Expanded(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 70,
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                        child: ListView.builder(
+                          itemBuilder: (context, index) => InvitationElement(
+                            invitations.invitations[index],
+                          ),
+                          itemCount: invitations.invitations.length,
+                        ),
+                      ),
+                    );
                   return Expanded(
                     child: Container(
                       height: MediaQuery.of(context).size.height - 70,
                       padding:
                           EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                      child: ListView.builder(
-                        itemBuilder: (context, index) => InvitationElement(
-                          invitations.invitations[index],
-                        ),
-                        itemCount: invitations.invitations.length,
-                      ),
+                      child: Center(
+                          child: Text(
+                        'Không có thông báo',
+                        style: TextStyle(fontSize: 18),
+                      )),
                     ),
                   );
                 } else
@@ -135,11 +157,9 @@ class _InvitationManagementView extends State<InvitationManagementView> {
                                           context,
                                           'Thông báo',
                                           'Đã chấp nhận thành công');
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  InvitationManagementView()));
+                                      setState(() {
+                                        fetch = _api.client.getInvitation();
+                                      });
                                     },
                                     child: Center(child: Text('Chấp nhận')),
                                   )
@@ -165,11 +185,9 @@ class _InvitationManagementView extends State<InvitationManagementView> {
                                         .denyInvitation(invitation.idStudent);
                                     dialog.showAlertDialog(context, 'Thông báo',
                                         'Đã từ chối thành công');
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                InvitationManagementView()));
+                                    setState(() {
+                                      fetch = _api.client.getInvitation();
+                                    });
                                   },
                                   child: Center(child: Text('Từ chối')),
                                 )

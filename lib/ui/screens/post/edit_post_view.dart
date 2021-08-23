@@ -9,6 +9,7 @@ import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
 import 'package:tutor_finder_app/services/body/post_body.dart';
 import 'package:tutor_finder_app/services/response/post_response.dart';
+import 'package:tutor_finder_app/ui/screens/main/main_view.dart';
 import 'package:tutor_finder_app/ui/screens/management/post_management_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
@@ -62,7 +63,7 @@ class _PostEditView extends State<PostEditView> {
               ),
               bottomNavigationBar: isEdit
                   ? Container(
-                      padding: EdgeInsets.only(left: 15, right: 15, bottom: 40),
+                      padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -92,12 +93,16 @@ class _PostEditView extends State<PostEditView> {
                                 await model.update(post.postId);
                                 dialog.showAlertDialog(
                                     context, 'Thông báo', model.message);
-                                if (model.message == "Sửa bài đăng thành công")
-                                  Navigator.push(
+                                if (model.message ==
+                                    "Sửa bài đăng thành công") {
+                                  Navigator.of(context)
+                                      .popUntil((route) => route.isFirst);
+                                  Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              PostManagementView()));
+                                              Home(selected: 3)));
+                                }
                               },
                               child: Text('Sửa yêu cầu'))
                         ],

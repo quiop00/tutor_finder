@@ -8,14 +8,18 @@ part of 'comments_model.dart';
 
 CommentModel _$CommentModelFromJson(Map<String, dynamic> json) {
   return CommentModel()
-    ..user = json['user'] as String
-    ..content = json['content'] as String
-    ..timeStamp = json['timeStamp'] as String;
+    ..id = json['id'] as int
+    ..idStudent = json['idStudent'] as int
+    ..nameStudent = json['nameStudent'] as String
+    ..idTutor = json['idTutor'] as int
+    ..content = json['content'] as String;
 }
 
 Map<String, dynamic> _$CommentModelToJson(CommentModel instance) =>
     <String, dynamic>{
-      'user': instance.user,
+      'id': instance.id,
+      'idStudent': instance.idStudent,
+      'nameStudent': instance.nameStudent,
+      'idTutor': instance.idTutor,
       'content': instance.content,
-      'timeStamp': instance.timeStamp,
     };

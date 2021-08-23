@@ -16,6 +16,8 @@ import 'package:tutor_finder_app/ui/screens/profile/profile_view.dart';
 import 'package:tutor_finder_app/ui/screens/search/search_view.dart';
 
 class Home extends StatefulWidget {
+  final int selected;
+  Home({this.selected = 0});
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -25,7 +27,7 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-  var selectedIndex = 0;
+  var selectedIndex;
   List<Widget> _widgetOptions = <Widget>[
     HomeViewTutor(),
     SearchView(),
@@ -38,7 +40,7 @@ class _Home extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    selectedIndex = 0;
+    selectedIndex = widget.selected;
     role = PreferenceUtils.getString('roles');
     if (role == 'ROLE_STUDENT') {
       _widgetOptions[0] = HomeViewLearner();

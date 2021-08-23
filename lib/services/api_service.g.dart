@@ -471,4 +471,39 @@ class _ApiClient implements ApiClient {
     final value = TakenClass.fromJson(_result.data);
     return value;
   }
+
+  @override
+  Future<CommentsResponse> getComments() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/comment',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = CommentsResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<PostsResponse> getRecommend() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/post/recommendation',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = PostsResponse.fromJson(_result.data);
+    return value;
+  }
 }

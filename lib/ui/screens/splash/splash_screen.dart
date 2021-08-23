@@ -18,9 +18,17 @@ class _SplashScreen extends State<SplashPage> {
   checkSession() async {
     var path = '/login';
     await Future.delayed(Duration(milliseconds: 1000));
-    await _api.client.getPosts().then((value) {
-      path = '/home';
-    }).catchError((onError) {});
+    var role = PreferenceUtils.getString('roles');
+    print(role);
+    if (role == 'ROLE_STUDENT')
+      await _api.client.getStudentProfile().then((value) {
+        path = '/home';
+      }).catchError((onError) {});
+    else if (role == 'ROLE_TUTOR') {
+      await _api.client.getTutorProfile().then((value) {
+        path = '/home';
+      }).catchError((onError) {});
+    }
     print('hr');
     if (PreferenceUtils.getString('token') == null ||
         PreferenceUtils.getString('token') == '') path = '/login';

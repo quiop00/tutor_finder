@@ -6,6 +6,7 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
+import 'package:tutor_finder_app/ui/screens/main/main_view.dart';
 import 'package:tutor_finder_app/ui/screens/management/post_management_view.dart';
 import 'package:tutor_finder_app/ui/screens/post/post_view_model.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
@@ -74,7 +75,16 @@ class _PostView extends State<PostView> {
                           await dialog.onLoading(context, 'Đang đăng bài');
                           await model.post();
                           print(model.message);
-                          if (model.message == "OK") Navigator.pop(context);
+                          if (model.message == "OK") {
+                            Navigator.of(context)
+                                .popUntil((route) => route.isFirst);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Home(
+                                          selected: 3,
+                                        )));
+                          }
                         },
                         child: Text('Đăng yêu cầu'))
                   ],
@@ -280,7 +290,7 @@ class _PostView extends State<PostView> {
                                     return null;
                                   }, onSaved: (input) {
                                     model.postBody.price = input;
-                                  }),
+                                  }, type: TextInputType.number),
                                   _formField(
                                       Icons.phone_android, 'Số điện thoại',
                                       validator: (input) {
@@ -290,7 +300,7 @@ class _PostView extends State<PostView> {
                                     return null;
                                   }, onSaved: (input) {
                                     model.postBody.phoneNumber = input;
-                                  }),
+                                  }, type: TextInputType.number),
                                   Container(
                                       child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -403,7 +413,8 @@ class _PostView extends State<PostView> {
             ));
   }
 
-  Widget _formField(IconData iconData, String hintText, {validator, onSaved}) {
+  Widget _formField(IconData iconData, String hintText,
+      {validator, onSaved, type = TextInputType.text}) {
     return Consumer<PostViewModel>(
       builder: (context, model, child) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -421,6 +432,7 @@ class _PostView extends State<PostView> {
             child: TextFormField(
               validator: validator,
               onSaved: onSaved,
+              keyboardType: type,
               decoration: InputDecoration(
                 errorStyle: TextStyle(height: 0),
                 hintText: hintText,

@@ -42,6 +42,7 @@ class _ProfileView extends State<ProfileView> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             userBody = snapshot.data;
+            print('${userBody.age} ' + userBody.phoneNumber);
             return Container(
                 child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
 import 'package:tutor_finder_app/services/api_service.dart';
+import 'package:tutor_finder_app/services/local_storage_service.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/tutor_response.dart';
 import 'package:tutor_finder_app/ui/screens/detail/tutor_details_view_model.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
+import 'package:tutor_finder_app/ui/widget/evaluate.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TutorsDetail extends StatefulWidget {
   final id;
@@ -23,12 +26,18 @@ class _TutorDetail extends State<TutorsDetail> {
   List<Schedule> schedules = [];
   var tutor;
   final api = locator<Api>();
+  final _formKey = GlobalKey<FormState>();
+  final _commentKey = GlobalKey<EvaluateWidgetState>();
   var invited;
+  String content;
+  var fetchComments;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    invited = false;
+    var data = PreferenceUtils.getString('tutor_$id') ?? 'false';
+    invited = data == 'true';
+    fetchComments = api.client.getComments();
   }
 
   @override
@@ -59,17 +68,19 @@ class _TutorDetail extends State<TutorsDetail> {
                           : 'Mời gia sư này'),
                       ElevatedButton(
                         onPressed: invited
-                            ? () {}
+                            ? null
                             : () async {
                                 await dialog.onLoading(context, 'Đang xử lý');
                                 await model.invite(model.tutor.id);
+                                await PreferenceUtils.setString(
+                                    'tutor_$id', 'true');
                                 dialog.showAlertDialog(
                                     context, 'Hoàn tất', model.message);
                                 setState(() {
                                   invited = true;
                                 });
                               },
-                        child: invited ? Text('Hủy lời mời') : Text('Mời dạy'),
+                        child: invited ? Text('Đã mời') : Text('Mời dạy'),
                       ),
                     ],
                   ),
@@ -180,31 +191,170 @@ class _TutorDetail extends State<TutorsDetail> {
                                   )),
                               Positioned(
                                 top: MediaQuery.of(context).size.height * 0.25 -
-                                    10,
-                                left: MediaQuery.of(context).size.width * 0.34,
+                                    15,
+                                left: MediaQuery.of(context).size.width * 0.29,
                                 child: Center(
                                     child: Row(
                                   children: [
-                                    Container(
-                                        padding: EdgeInsets.all(6),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.32,
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.05,
-                                        decoration: BoxDecoration(
-                                            color: Color.fromARGB(
-                                                255, 49, 243, 208),
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                        child: Center(
-                                            child: Text(
-                                          "Đánh giá",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white),
-                                        ))),
+                                    ElevatedButton(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15))),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color.fromARGB(
+                                                    255, 49, 243, 208)),
+                                      ),
+                                      child: Text('Đánh giá'),
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Đánh giá'),
+                                                content: Stack(
+                                                  children: <Widget>[
+                                                    Positioned(
+                                                      right: -40.0,
+                                                      top: -40.0,
+                                                      child: InkResponse(
+                                                        onTap: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: CircleAvatar(
+                                                          child:
+                                                              Icon(Icons.close),
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Form(
+                                                      key: _formKey,
+                                                      child: Column(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    8.0),
+                                                            child:
+                                                                TextFormField(
+                                                              validator:
+                                                                  (input) {
+                                                                if (input
+                                                                        .length ==
+                                                                    0) {
+                                                                  return 'Nhập nội dung';
+                                                                }
+                                                                return null;
+                                                              },
+                                                              onSaved: (input) {
+                                                                content = input;
+                                                              },
+                                                              maxLines: 3,
+                                                              decoration: InputDecoration(
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10),
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none,
+                                                                  hintText:
+                                                                      'Nhập nội dung',
+                                                                  hintStyle: TextStyle(
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          400])),
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                if (_formKey
+                                                                    .currentState
+                                                                    .validate()) {
+                                                                  _formKey
+                                                                      .currentState
+                                                                      .save();
+                                                                } else
+                                                                  return;
+                                                                await api.client
+                                                                    .comment({
+                                                                  'idTutor': id,
+                                                                  'content':
+                                                                      content
+                                                                }).catchError(
+                                                                        (onError) {
+                                                                  print(
+                                                                      onError);
+                                                                });
+                                                                setState(() {
+                                                                  fetchComments = api
+                                                                      .client
+                                                                      .getComments();
+                                                                });
+                                                                Navigator.pop(
+                                                                    context);
+                                                                showDialog(
+                                                                    context:
+                                                                        context,
+                                                                    builder:
+                                                                        (BuildContext
+                                                                            context) {
+                                                                      return AlertDialog(
+                                                                          title:
+                                                                              Text('Đánh giá thành công'));
+                                                                    });
+                                                              },
+                                                              child: Text(
+                                                                  'Đánh giá'),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            });
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    ElevatedButton(
+                                      style: ButtonStyle(
+                                        shape: MaterialStateProperty.all<
+                                                RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15))),
+                                        backgroundColor:
+                                            MaterialStateProperty.all<Color>(
+                                                Color.fromARGB(
+                                                    255, 49, 243, 208)),
+                                      ),
+                                      child: Icon(
+                                        Icons.call,
+                                        color: Colors.indigo,
+                                      ),
+                                      onPressed: () {
+                                        launch(
+                                            'tel:${model.tutor.phoneNumber}');
+                                      },
+                                    ),
                                   ],
                                 )),
                               ),
@@ -595,12 +745,13 @@ class _TutorDetail extends State<TutorsDetail> {
                                         ),
                                       ),
                                     ]),
-                                // Container(
-                                //   padding: EdgeInsets.all(10),
-                                //   child: EvaluateWidget(
-                                //     tutor: tutor,
-                                //   ),
-                                // )
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: EvaluateWidget(
+                                    id: model.tutor.id,
+                                    fetchComments: fetchComments,
+                                  ),
+                                )
                               ],
                             ),
                           ),

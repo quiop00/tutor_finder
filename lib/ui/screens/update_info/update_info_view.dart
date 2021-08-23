@@ -357,13 +357,11 @@ class _UpdateInfoView extends State<UpdateInfoView> {
                             child: TextFormField(
                               initialValue: model.tutor.description,
                               validator: (input) {
-                                if (input.length == 0) {
-                                  return '';
-                                }
                                 return null;
                               },
                               onSaved: (input) {
-                                model.tutor.description = input;
+                                model.tutor.description =
+                                    input ?? 'Không có mô tả';
                               },
                               maxLines: 10,
                               decoration: InputDecoration(

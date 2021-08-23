@@ -54,7 +54,10 @@ class _HomeViewTutor extends State<HomeViewTutor> {
           Container(
               padding: EdgeInsets.all(10),
               alignment: Alignment.topLeft,
-              child: Text("Danh sách lớp học")),
+              child: Text(
+                "Danh sách lớp học",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              )),
           Flexible(
             child: Container(
               height: MediaQuery.of(context).size.height - 130,
@@ -75,7 +78,7 @@ class PostList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: api.client.getPosts(),
+        future: api.client.getRecommend(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             posts = snapshot.data.posts;

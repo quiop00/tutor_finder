@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:tutor_finder_app/models/schedule_model.dart';
 import 'package:tutor_finder_app/services/api_service.dart';
+import 'package:tutor_finder_app/services/local_storage_service.dart';
 import 'package:tutor_finder_app/services/locator_getit.dart';
 import 'package:tutor_finder_app/services/response/post_response.dart';
 import 'package:tutor_finder_app/shared/dialog.dart' as dialog;
@@ -10,7 +11,9 @@ import 'package:tutor_finder_app/ui/screens/detail/post_detail_view_model.dart';
 
 class PostDetail extends StatefulWidget {
   final PostResponse post;
-  PostDetail({this.post});
+  final bool isShow;
+  PostDetail({this.post, this.isShow = false});
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -27,7 +30,8 @@ class _PostDetail extends State<PostDetail> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    suggested = false;
+    var data = PreferenceUtils.getString('post_${post.postId}') ?? 'false';
+    suggested = data == 'true';
     if (post.schedules != null) {
       schedules = Schedule.schedulesFromJson(post.schedules);
     } else
@@ -46,23 +50,30 @@ class _PostDetail extends State<PostDetail> {
               ),
               bottomNavigationBar: Container(
                 padding: EdgeInsets.only(left: 15, right: 15, bottom: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Gửi lời đề nghị dạy'),
-                    ElevatedButton(
-                        onPressed: suggested
-                            ? null
-                            : () async {
-                                await dialog.onLoading(context, 'Đang xử lý');
-                                await model.suggest(
-                                    post.idStudent, post.postId);
-                                dialog.showAlertDialog(
-                                    context, 'Hoàn tất', model.message);
-                              },
-                        child: Text(suggested ? 'Chờ phản hồi' : 'Đề nghị dạy'))
-                  ],
-                ),
+                child: widget.isShow
+                    ? Container(height: 20, child: Text('Đang dạy'))
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Gửi lời đề nghị dạy'),
+                          ElevatedButton(
+                              onPressed: suggested
+                                  ? null
+                                  : () async {
+                                      await dialog.onLoading(
+                                          context, 'Đang xử lý');
+                                      await model.suggest(
+                                          post.idStudent, post.postId);
+                                      setState(() {
+                                        suggested = true;
+                                      });
+                                      dialog.showAlertDialog(
+                                          context, 'Hoàn tất', model.message);
+                                    },
+                              child: Text(
+                                  suggested ? 'Chờ phản hồi' : 'Đề nghị dạy'))
+                        ],
+                      ),
               ),
               body: SingleChildScrollView(
                 child: Container(
